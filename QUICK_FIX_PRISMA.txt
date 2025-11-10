@@ -1,0 +1,35 @@
+========================================
+حل سريع لمشكلة Prisma Generate
+========================================
+
+المشكلة: EPERM - الملف قيد الاستخدام
+
+✅ الحل السريع:
+
+1. أغلق جميع نوافذ CMD/PowerShell التي تشغل Backend:
+   - ابحث عن نوافذ "Backend Server" أو "npm run dev"
+   - أغلقها
+
+2. أو نفذ هذا الأمر في PowerShell:
+   ----------------------------
+   cd "C:\Users\admin\Desktop\mahmood\AL RABEI REAL STATE\backend"
+   Get-Process | Where-Object {$_.CommandLine -like "*start-server*"} | Stop-Process -Force
+   ----------------------------
+
+3. ثم نفذ:
+   ----------------------------
+   Remove-Item -Path "node_modules\.prisma" -Recurse -Force -ErrorAction SilentlyContinue
+   npm run prisma:generate
+   ----------------------------
+
+✅ أو استخدم الملف الجاهز:
+   fix-prisma-generate.ps1
+   
+   فقط اضغط مرتين عليه أو نفذ:
+   .\fix-prisma-generate.ps1
+
+========================================
+ملاحظة: Migration تم بنجاح! ✅
+فقط Prisma Client يحتاج re-generate
+========================================
+

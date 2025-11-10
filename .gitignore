@@ -1,0 +1,28 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment
+.env
+
+# Prisma DB (local dev only)
+prisma/dev.db
+prisma/dev.db-journal
+
+# Build output
+.next/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Editor
+.vscode/
+.idea/
