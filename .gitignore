@@ -1,28 +1,58 @@
-# Node
+# Dependencies
 node_modules/
 npm-debug.log
 yarn-error.log
+package-lock.json
 
-# Environment
+# Environment Variables
 .env
+.env.local
+.env.production
+config.env
 
-# Prisma DB (local dev only)
+# Database
 prisma/dev.db
 prisma/dev.db-journal
+*.db
+*.db-journal
 
-# Build output
+# Build Output
 .next/
 dist/
 build/
+out/
 
-# OS
+# OS Files
 .DS_Store
 Thumbs.db
+*.swp
+*.swo
 
 # Logs
 logs/
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Editor
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
+
+# Testing
+coverage/
+.nyc_output/
+
+# Uploads (in development - remove in production if needed)
+backend/uploads/*.jpg
+backend/uploads/*.png
+backend/uploads/*.jpeg
+backend/uploads/*.gif
+!backend/uploads/.gitkeep
+
+# Temporary Files
+*.tmp
+*.temp
+.cache/
