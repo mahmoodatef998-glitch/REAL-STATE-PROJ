@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://alrabie.ae/sitemap.xml
+
+# Disallow admin and broker pages
+Disallow: /admin/
+Disallow: /broker/
+
+# Disallow API routes
+Disallow: /api/
+

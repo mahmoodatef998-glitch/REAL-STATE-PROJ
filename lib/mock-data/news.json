@@ -1,0 +1,63 @@
+[
+  {
+    "id": "news-001",
+    "type": "news",
+    "category": "Perspectives",
+    "title": "From Constraint to Catalyst: Designing the Huber Center at Vanderbilt",
+    "date": "2025-10-23",
+    "thumbnail": "https://picsum.photos/seed/huber/800/600",
+    "excerpt": "Short description...",
+    "link": "/news/huber-center"
+  },
+  {
+    "id": "news-002",
+    "type": "news",
+    "category": "News",
+    "title": "Shaping Urban Experiences in Ajman",
+    "date": "2025-10-10",
+    "thumbnail": "https://picsum.photos/seed/ajman/800/600",
+    "excerpt": "Short description...",
+    "link": "/news/ajman-experiences"
+  },
+  {
+    "id": "news-003",
+    "type": "news",
+    "category": "Perspectives",
+    "title": "The Future of Sustainable Architecture in the UAE",
+    "date": "2025-09-28",
+    "thumbnail": "https://picsum.photos/seed/sustainable/800/600",
+    "excerpt": "Exploring innovative approaches to green building design...",
+    "link": "/news/sustainable-architecture"
+  },
+  {
+    "id": "news-004",
+    "type": "news",
+    "category": "News",
+    "title": "New Luxury Development Launches in Dubai Marina",
+    "date": "2025-09-15",
+    "thumbnail": "https://picsum.photos/seed/marina/800/600",
+    "excerpt": "Latest waterfront property project announced...",
+    "link": "/news/dubai-marina"
+  },
+  {
+    "id": "news-005",
+    "type": "news",
+    "category": "Perspectives",
+    "title": "Smart Home Technology Integration",
+    "date": "2025-09-02",
+    "thumbnail": "https://picsum.photos/seed/smart-home/800/600",
+    "excerpt": "How technology is transforming modern living spaces...",
+    "link": "/news/smart-home-tech"
+  },
+  {
+    "id": "news-006",
+    "type": "news",
+    "category": "News",
+    "title": "Award-Winning Design Team Expands",
+    "date": "2025-08-20",
+    "thumbnail": "https://picsum.photos/seed/award/800/600",
+    "excerpt": "New talent joins our creative team...",
+    "link": "/news/team-expansion"
+  }
+]
+
