@@ -96,14 +96,16 @@ export function useLeadStats() {
 
 /**
  * Hook to fetch notification count (new leads)
+ * Only enabled when user is authenticated
  */
-export function useLeadNotifications() {
+export function useLeadNotifications(isAuthenticated = false) {
   return useQuery({
     queryKey: ['lead-notifications'],
     queryFn: () => leadsApi.getNotificationCount(),
     select: (data) => data.count || 0,
     refetchInterval: 30000, // Refetch every 30 seconds
-    staleTime: 20000 // Consider data stale after 20 seconds
+    staleTime: 20000, // Consider data stale after 20 seconds
+    enabled: isAuthenticated // Only run query when authenticated
   });
 }
 

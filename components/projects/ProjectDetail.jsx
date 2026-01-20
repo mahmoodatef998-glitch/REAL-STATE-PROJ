@@ -101,8 +101,14 @@ export default function ProjectDetail({ projectId }) {
 
   const mainImage = images[selectedImageIndex] || 'https://picsum.photos/800/600';
   
+  // Add cache-buster to force image reload
+  const imageSrcWithCache = mainImage.includes('?') 
+    ? `${mainImage}&t=${selectedImageIndex}`
+    : `${mainImage}?t=${selectedImageIndex}`;
+  
   // Debug: Log owner info
   console.log('Property owner:', project.owner);
+  console.log('Current image index:', selectedImageIndex, 'Image URL:', mainImage);
 
   // JSON-LD structured data for SEO
   const jsonLd = {
@@ -149,14 +155,11 @@ export default function ProjectDetail({ projectId }) {
             onMouseLeave={handleImageMouseLeave}
           >
             <div className="relative w-full h-full">
-              <Image
-                src={mainImage}
+              <img
+                key={`main-${selectedImageIndex}`}
+                src={imageSrcWithCache}
                 alt={project.title}
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover transition-opacity duration-500"
-                priority
-                unoptimized={shouldUnoptimizeImage(mainImage)}
+                className="w-full h-full object-cover transition-opacity duration-500"
                 onError={(e) => {
                   // Prevent infinite loop if fallback also fails
                   const fallbackUrl = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80';
@@ -188,7 +191,7 @@ export default function ProjectDetail({ projectId }) {
             <div className="grid grid-cols-4 gap-2">
               {images.map((image, index) => (
                 <button
-                  key={index}
+                  key={`thumb-${index}-${image}`}
                   onClick={() => handleImageSelect(index)}
                   className={`relative aspect-square rounded overflow-hidden border-2 transition-all duration-300 ${
                     selectedImageIndex === index 
@@ -197,6 +200,7 @@ export default function ProjectDetail({ projectId }) {
                   }`}
                 >
                   <Image
+                    key={`thumb-img-${index}-${image}`}
                     src={image}
                     alt={`${project.title} - Image ${index + 1}`}
                     fill

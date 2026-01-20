@@ -22,8 +22,8 @@ export default function Header() {
   const pathname = usePathname();
   const { user, isAuthenticated, logout, canManageProperties, isAdmin, isBroker } = useAuth();
   
-  // Fetch notification count for brokers/admins
-  const { data: notificationCount = 0 } = useLeadNotifications();
+  // Fetch notification count for brokers/admins only when authenticated
+  const { data: notificationCount = 0 } = useLeadNotifications(isAuthenticated && (isBroker || isAdmin));
 
   const handleLoginClick = () => {
     setShowLoginModal(true);
@@ -54,7 +54,7 @@ export default function Header() {
     <>
       <header className="sticky top-0 z-50 backdrop-blur-md bg-neutral-900/95 border-b border-white/10 shadow-lg" suppressHydrationWarning>
         <div className="container-x" suppressHydrationWarning>
-          <div className="flex items-center justify-between h-20 gap-8">
+          <div className="flex items-center justify-between h-20 gap-8" suppressHydrationWarning>
             {/* Logo */}
             <Link href="/" className="font-bold tracking-wide text-xl shrink-0" suppressHydrationWarning>
               Alrabie <span className="text-accent">Real Estate</span>
@@ -83,7 +83,7 @@ export default function Header() {
               {isAuthenticated ? (
                 <>
                   {/* User Info */}
-                  <div className="hidden xl:flex items-center gap-3 px-4 py-2 bg-neutral-800/60 rounded-lg border border-neutral-700">
+                  <div className="hidden xl:flex items-center gap-3 px-4 py-2 bg-neutral-800/60 rounded-lg border border-neutral-700" suppressHydrationWarning>
                     <div className="flex flex-col items-end">
                       <span className="text-white font-semibold text-sm">{user?.name}</span>
                       <span className="text-accent text-xs font-medium uppercase tracking-wide">
