@@ -75,8 +75,8 @@ npm run dev
 ### 🎯 Or Use Quick Start Files (Windows)
 
 Simply double-click:
-- `START_PROJECT.bat` - Starts everything (Backend + Frontend + Browser)
-- `PRISMA_STUDIO.bat` - Opens database management tool
+- `START_PROJECT.bat` - Starts everything (Backend + Frontend + Prisma Studio + Opens Browsers)
+- `PRISMA_STUDIO.bat` - Opens database management tool only (if needed separately)
 
 ---
 

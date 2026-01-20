@@ -3,30 +3,53 @@ node_modules/
 npm-debug.log
 yarn-error.log
 package-lock.json
+yarn.lock
 
-# Environment Variables
+# ⚠️ CRITICAL: Environment Variables - NEVER commit these!
 .env
 .env.local
+.env.*.local
 .env.production
+.env.production.local
 config.env
+.env.test.local
+
+# Backend specific
+backend/.env
+backend/config.env
+backend/.env.production
+backend/.env.*.local
+
+# Frontend specific
+frontend-next/.env.local
+frontend-next/.env.*.local
 
 # Database
 prisma/dev.db
 prisma/dev.db-journal
 *.db
 *.db-journal
+/database/*.db
 
 # Build Output
 .next/
+.next-build/
 dist/
 build/
 out/
+*.tsbuildinfo
 
 # OS Files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 *.swp
 *.swo
+*~
 
 # Logs
 logs/
@@ -34,25 +57,71 @@ logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
 
-# Editor
+# Editor Configuration
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
+.vim/
+.emacs*
+*.swp
+*.iml
 
-# Testing
+# Testing & Coverage
 coverage/
 .nyc_output/
+*.lcov
+.jest/
 
-# Uploads (in development - remove in production if needed)
+# IDE
+*.iml
+.gradle/
+.idea/
+out/
+
+# Uploads (in development)
 backend/uploads/*.jpg
 backend/uploads/*.png
 backend/uploads/*.jpeg
 backend/uploads/*.gif
+backend/uploads/*.webp
 !backend/uploads/.gitkeep
+
+# Cache
+.cache/
+.eslintcache
+.next/cache/
 
 # Temporary Files
 *.tmp
 *.temp
 .cache/
+tmp/
+temp/
+
+# System Files
+desktop.ini
+._.DS_Store
+
+# Local development
+.env.local.example
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Private files
+private/
+secrets/
+.secret/
+
+# Build artifacts
+/dist
+/build
+/target
+
+# Node modules lock files (optional - depends on team preference)
+# Uncomment below to ignore lock files
+# package-lock.json
+# yarn.lock

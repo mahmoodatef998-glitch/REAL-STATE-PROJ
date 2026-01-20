@@ -12,6 +12,15 @@ echo Waiting for backend to initialize...
 timeout /t 5 /nobreak >nul
 
 echo.
+echo Starting Prisma Studio...
+echo.
+
+start "Prisma Studio" cmd /k "cd backend && npm run prisma:studio"
+
+echo Waiting for Prisma to initialize...
+timeout /t 3 /nobreak >nul
+
+echo.
 echo Starting Frontend Server with API connection...
 echo.
 
@@ -25,7 +34,7 @@ echo.
 echo Opening project in browser...
 echo.
 
-REM Try to open the frontend (Next.js usually starts on 3000, but may use 3001 if 3000 is busy)
+REM Open Frontend only (Prisma Studio opens automatically)
 start http://localhost:3000
 
 echo.
@@ -35,8 +44,7 @@ echo ========================================
 echo.
 echo Backend Server:  http://localhost:3050/api
 echo Frontend Site:   http://localhost:3000 (or 3001)
-echo.
-echo NOTE: If you need Prisma Studio, run PRISMA_STUDIO.bat
+echo Prisma Studio:   http://localhost:5555 (opens automatically)
 echo.
 echo All servers are running in separate windows.
 echo You can close this window safely.
