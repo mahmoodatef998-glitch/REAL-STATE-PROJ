@@ -1,6 +1,11 @@
 {
   "root": true,
-  "extends": ["next/core-web-vitals"],
-  "rules": {},
+  "extends": [
+    "next/core-web-vitals"
+  ],
+  "rules": {
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-img-element": "warn"
+  },
   "reportUnusedDisableDirectives": true
 }

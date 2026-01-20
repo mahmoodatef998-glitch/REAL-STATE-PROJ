@@ -55,7 +55,7 @@ const newsItems = [
     title: "Exclusive Mansion in Emirates Hills",
     category: "Ultra Luxury",
     image: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1920&q=80",
-    description: "Palatial living in Dubai's most prestigious golf community with unmatched privacy",
+    description: "Palatial living in Dubai&apos;s most prestigious golf community with unmatched privacy",
     date: "Nov 2025",
     tag: "Exclusive"
   }
@@ -122,7 +122,7 @@ export default function NewsSection() {
   };
 
   return (
-    <section 
+    <section
       className="relative h-screen min-h-[600px] max-h-[900px] overflow-hidden bg-black"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -132,9 +132,8 @@ export default function NewsSection() {
       {newsItems.map((item, index) => (
         <div
           key={item.id}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentSlide ? 'opacity-100' : 'opacity-0'
-          }`}
+          className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100' : 'opacity-0'
+            }`}
         >
           <Image
             src={item.image}
@@ -226,11 +225,10 @@ export default function NewsSection() {
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`transition-all ${
-              index === currentSlide
+            className={`transition-all ${index === currentSlide
                 ? 'w-12 bg-accent'
                 : 'w-3 bg-white/50 hover:bg-white/70'
-            } h-3 rounded-full focus-ring`}
+              } h-3 rounded-full focus-ring`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}

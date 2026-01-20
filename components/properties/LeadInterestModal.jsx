@@ -23,24 +23,24 @@ export default function LeadInterestModal({ isOpen, onClose, property, openEmail
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
-    
+
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
     } else if (!/^[\d\s+()-]+$/.test(formData.phone)) {
       newErrors.phone = 'Please enter a valid phone number';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -53,10 +53,10 @@ export default function LeadInterestModal({ isOpen, onClose, property, openEmail
       };
 
       const result = await createLead.mutateAsync(leadData);
-      
+
       if (result.success) {
         setSuccessMessage(result.message || 'Your interest has been recorded! The broker will contact you soon.');
-        
+
         // If openEmailAfterSubmit is true, open Gmail with broker email
         if (openEmailAfterSubmit && property?.owner?.email) {
           const emailSubject = `Interest in ${property.title}`;
@@ -76,16 +76,16 @@ Phone: ${formData.phone}
 Please contact me at your earliest convenience.
 
 Thank you!`;
-          
+
           // Create mailto link
           const mailtoLink = `mailto:${property.owner.email}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-          
+
           // Open email client
           window.location.href = mailtoLink;
         }
-        
+
         setFormData({ name: '', phone: '' });
-        
+
         // Close modal after 2 seconds
         setTimeout(() => {
           setSuccessMessage('');
@@ -94,8 +94,8 @@ Thank you!`;
       }
     } catch (error) {
       console.error('Error submitting lead:', error);
-      setErrors({ 
-        submit: error.response?.data?.error || 'Failed to submit. Please try again.' 
+      setErrors({
+        submit: error.response?.data?.error || 'Failed to submit. Please try again.'
       });
     }
   };
@@ -111,12 +111,12 @@ Thank you!`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div 
-        className="absolute inset-0" 
+      <div
+        className="absolute inset-0"
         onClick={handleClose}
         aria-hidden="true"
       />
-      
+
       <div className="relative bg-neutral-900 rounded-lg shadow-xl border border-white/10 max-w-md w-full p-6 sm:p-8">
         {/* Close button */}
         <button
@@ -132,7 +132,7 @@ Thank you!`;
         {/* Header */}
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-white mb-2">
-            I'm Interested!
+            I&apos;m Interested!
           </h2>
           <p className="text-neutral-300 text-sm">
             {property?.title || 'This Property'}
@@ -174,9 +174,8 @@ Thank you!`;
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className={`w-full px-4 py-3 bg-neutral-800 border ${
-                errors.name ? 'border-red-500' : 'border-white/10'
-              } rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-colors`}
+              className={`w-full px-4 py-3 bg-neutral-800 border ${errors.name ? 'border-red-500' : 'border-white/10'
+                } rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-colors`}
               placeholder="Enter your full name"
               disabled={createLead.isPending || successMessage}
             />
@@ -196,9 +195,8 @@ Thank you!`;
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className={`w-full px-4 py-3 bg-neutral-800 border ${
-                errors.phone ? 'border-red-500' : 'border-white/10'
-              } rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-colors`}
+              className={`w-full px-4 py-3 bg-neutral-800 border ${errors.phone ? 'border-red-500' : 'border-white/10'
+                } rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-colors`}
               placeholder="+971 50 123 4567"
               disabled={createLead.isPending || successMessage}
             />
@@ -239,10 +237,10 @@ Thank you!`;
 
         {/* Privacy Note */}
         <p className="mt-4 text-xs text-neutral-500 text-center">
-          Your information will only be shared with the property's broker.
+          Your information will only be shared with the property&apos;s broker.
         </p>
       </div>
     </div>
   );
 }
-
+```

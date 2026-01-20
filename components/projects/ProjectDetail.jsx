@@ -12,7 +12,7 @@ export default function ProjectDetail({ projectId }) {
   const [showExpressInterestModal, setShowExpressInterestModal] = useState(false);
   const intervalRef = useRef(null);
   const isPausedRef = useRef(false);
-  
+
   const { data: project, isLoading, isError } = useQuery({
     queryKey: ['property', projectId],
     queryFn: () => getPropertyById(projectId),
@@ -100,12 +100,12 @@ export default function ProjectDetail({ projectId }) {
   }
 
   const mainImage = images[selectedImageIndex] || 'https://picsum.photos/800/600';
-  
+
   // Add cache-buster to force image reload
-  const imageSrcWithCache = mainImage.includes('?') 
+  const imageSrcWithCache = mainImage.includes('?')
     ? `${mainImage}&t=${selectedImageIndex}`
     : `${mainImage}?t=${selectedImageIndex}`;
-  
+
   // Debug: Log owner info
   console.log('Property owner:', project.owner);
   console.log('Current image index:', selectedImageIndex, 'Image URL:', mainImage);
@@ -149,17 +149,19 @@ export default function ProjectDetail({ projectId }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Image Gallery */}
         <div>
-          <div 
+          <div
             className="relative aspect-[4/3] mb-4 rounded-lg overflow-hidden group"
             onMouseEnter={handleImageMouseEnter}
             onMouseLeave={handleImageMouseLeave}
           >
             <div className="relative w-full h-full">
-              <img
+              <Image
                 key={`main-${selectedImageIndex}`}
                 src={imageSrcWithCache}
                 alt={project.title}
+                fill
                 className="w-full h-full object-cover transition-opacity duration-500"
+                unoptimized={true}
                 onError={(e) => {
                   // Prevent infinite loop if fallback also fails
                   const fallbackUrl = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80';
@@ -176,28 +178,26 @@ export default function ProjectDetail({ projectId }) {
                 {images.map((_, index) => (
                   <div
                     key={index}
-                    className={`h-1 rounded-full transition-all duration-300 ${
-                      selectedImageIndex === index 
-                        ? 'w-8 bg-accent' 
+                    className={`h-1 rounded-full transition-all duration-300 ${selectedImageIndex === index
+                        ? 'w-8 bg-accent'
                         : 'w-1 bg-white/40'
-                    }`}
+                      }`}
                   />
                 ))}
               </div>
             )}
           </div>
-          
+
           {images.length > 1 && (
             <div className="grid grid-cols-4 gap-2">
               {images.map((image, index) => (
                 <button
                   key={`thumb-${index}-${image}`}
                   onClick={() => handleImageSelect(index)}
-                  className={`relative aspect-square rounded overflow-hidden border-2 transition-all duration-300 ${
-                    selectedImageIndex === index 
-                      ? 'border-accent scale-105' 
+                  className={`relative aspect-square rounded overflow-hidden border-2 transition-all duration-300 ${selectedImageIndex === index
+                      ? 'border-accent scale-105'
                       : 'border-transparent hover:border-white/20'
-                  }`}
+                    }`}
                 >
                   <Image
                     key={`thumb-img-${index}-${image}`}
@@ -225,7 +225,7 @@ export default function ProjectDetail({ projectId }) {
         {/* Property Details */}
         <div>
           <h1 className="text-3xl md:text-4xl font-bold mb-4">{project.title}</h1>
-          
+
           <div className="flex flex-wrap gap-4 mb-6">
             {project.emirate && (
               <span className="px-4 py-2 bg-neutral-800 rounded-full text-sm">
@@ -311,7 +311,7 @@ export default function ProjectDetail({ projectId }) {
                 {project.owner.phone && (
                   <div className="flex items-center gap-3">
                     <span className="text-neutral-400 min-w-[80px]">Phone:</span>
-                    <a 
+                    <a
                       href={`tel:${project.owner.phone}`}
                       className="text-accent hover:text-accent/80 font-medium"
                     >
@@ -322,7 +322,7 @@ export default function ProjectDetail({ projectId }) {
                 {project.owner.whatsapp && (
                   <div className="flex items-center gap-3">
                     <span className="text-neutral-400 min-w-[80px]">WhatsApp:</span>
-                    <a 
+                    <a
                       href={`https://wa.me/${project.owner.whatsapp.replace(/[^\d]/g, '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -335,7 +335,7 @@ export default function ProjectDetail({ projectId }) {
                 {project.owner.email && (
                   <div className="flex items-center gap-3">
                     <span className="text-neutral-400 min-w-[80px]">Email:</span>
-                    <a 
+                    <a
                       href={`mailto:${project.owner.email}`}
                       className="text-accent hover:text-accent/80 font-medium"
                     >
@@ -356,7 +356,7 @@ export default function ProjectDetail({ projectId }) {
               Express Interest
             </button>
             {project.owner?.phone && (
-              <a 
+              <a
                 href={`tel:${project.owner.phone}`}
                 className="px-8 py-3 border border-white/20 text-white font-semibold rounded-lg hover:bg-white/5 transition-colors focus-ring text-center"
               >
@@ -364,7 +364,7 @@ export default function ProjectDetail({ projectId }) {
               </a>
             )}
             {project.owner?.whatsapp && (
-              <a 
+              <a
                 href={`https://wa.me/${project.owner.whatsapp.replace(/[^\d]/g, '')}?text=Hi, I'm interested in this property: ${encodeURIComponent(project.title)} (ID: ${project.id})`}
                 target="_blank"
                 rel="noopener noreferrer"
