@@ -38,7 +38,7 @@ export default function Disciplines() {
             viewport={{ once: true }}
           >
             <Link
-              href={`/disciplines/${discipline.toLowerCase().replace(/\s+/g, '-')}`}
+              href="/disciplines"
               className="inline-block px-6 py-3 bg-neutral-800 hover:bg-neutral-700 border border-white/10 hover:border-white/20 rounded-full text-sm font-medium transition-all duration-300 focus-ring"
             >
               {discipline}
