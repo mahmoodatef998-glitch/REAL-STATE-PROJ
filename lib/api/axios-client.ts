@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 
 let baseURL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3050').trim();
-if (!baseURL.endsWith('/api')) {
-    baseURL = `${baseURL.replace(/\/$/, '')}/api`;
+if (!baseURL.endsWith('/api/')) {
+    baseURL = `${baseURL.replace(/\/$/, '')}/api/`;
 }
 
 // Custom interface for extending AxiosRequestConfig
