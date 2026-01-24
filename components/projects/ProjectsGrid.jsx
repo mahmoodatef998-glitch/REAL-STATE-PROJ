@@ -11,7 +11,7 @@ export default function ProjectsGrid() {
     price_min: '',
     price_max: ''
   });
-  
+
   const { data = [], isLoading, isError } = useAllProperties(filters);
 
   const handleFilterChange = (key, value) => {
@@ -24,7 +24,7 @@ export default function ProjectsGrid() {
       <aside className="lg:col-span-1">
         <div className="bg-neutral-900 p-6 rounded-lg border border-white/10 sticky top-24">
           <h3 className="text-lg font-semibold mb-4">Filters</h3>
-          
+
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">Property Type</label>
@@ -50,13 +50,13 @@ export default function ProjectsGrid() {
                 className="w-full px-3 py-2 bg-neutral-800 border border-white/10 rounded focus-ring"
               >
                 <option value="">All Emirates</option>
-                <option value="ajman">Ajman</option>
-                <option value="dubai">Dubai</option>
-                <option value="sharjah">Sharjah</option>
-                <option value="abu-dhabi">Abu Dhabi</option>
-                <option value="ras-al-khaimah">Ras Al Khaimah</option>
-                <option value="fujairah">Fujairah</option>
-                <option value="umm-al-quwain">Umm Al Quwain</option>
+                <option value="Ajman">Ajman</option>
+                <option value="Dubai">Dubai</option>
+                <option value="Sharjah">Sharjah</option>
+                <option value="Abu Dhabi">Abu Dhabi</option>
+                <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+                <option value="Fujairah">Fujairah</option>
+                <option value="Umm Al Quwain">Umm Al Quwain</option>
               </select>
             </div>
 

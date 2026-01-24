@@ -59,7 +59,7 @@ export const propertySchema = z.object({
         .max(200, 'Title is too long'),
     description: z
         .string()
-        .min(10, 'Description must be at least 10 characters')
+        .min(0)
         .max(5000, 'Description is too long')
         .optional()
         .or(z.literal('')),
@@ -67,12 +67,12 @@ export const propertySchema = z.object({
     purpose: z.enum(['sale', 'rent']),
     price: z
         .number()
-        .positive('Price must be a positive number')
-        .min(1, 'Price must be at least 1'),
+        .min(0, 'Price must be a non-negative number')
+        .optional(),
     area_sqft: z
         .number()
-        .positive('Area must be a positive number')
-        .min(1, 'Area must be at least 1'),
+        .min(0, 'Area must be a non-negative number')
+        .optional(),
     bedrooms: z
         .number()
         .int('Bedrooms must be a whole number')
@@ -102,7 +102,7 @@ export const propertySchema = z.object({
     features: z
         .array(z.string())
         .optional(),
-    status: z.enum(['active', 'closed', 'sold', 'rented']).optional(),
+    status: z.enum(['active', 'closed', 'sold', 'rented', 'deleted']).optional(),
     existingImages: z.union([z.string(), z.array(z.string())]).optional(),
 });
 

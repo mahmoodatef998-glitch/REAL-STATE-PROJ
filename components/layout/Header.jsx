@@ -21,7 +21,7 @@ export default function Header() {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const pathname = usePathname();
   const { user, isAuthenticated, logout, canManageProperties, isAdmin, isBroker } = useAuth();
-  
+
   // Fetch notification count for brokers/admins only when authenticated
   const { data: notificationCount = 0 } = useLeadNotifications(isAuthenticated && (isBroker || isAdmin));
 
@@ -59,18 +59,17 @@ export default function Header() {
             <Link href="/" className="font-bold tracking-wide text-xl shrink-0" suppressHydrationWarning>
               Alrabie <span className="text-accent">Real Estate</span>
             </Link>
-            
+
             {/* Main Navigation */}
             <nav className="hidden lg:flex items-center gap-8 text-[15px] font-medium text-neutral-200" suppressHydrationWarning>
               {navItems.map((item) => (
-                <Link 
-                  key={item.href} 
-                  href={item.href} 
-                  className={`hover:text-accent focus-ring transition-all duration-200 pb-1 border-b-2 ${
-                    pathname === item.href 
-                      ? 'text-accent border-accent' 
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`hover:text-accent focus-ring transition-all duration-200 pb-1 border-b-2 ${pathname === item.href
+                      ? 'text-accent border-accent'
                       : 'border-transparent hover:border-accent/50'
-                  }`}
+                    }`}
                   suppressHydrationWarning
                 >
                   {item.label}
@@ -182,9 +181,9 @@ export default function Header() {
                 </div>
               )}
 
-              <button 
-                aria-label="Open Menu" 
-                className="lg:hidden text-2xl text-white hover:text-accent transition-colors p-2" 
+              <button
+                aria-label="Open Menu"
+                className="lg:hidden text-2xl text-white hover:text-accent transition-colors p-2"
                 onClick={() => setOpen(true)}
               >
                 ☰
@@ -195,127 +194,134 @@ export default function Header() {
 
         {/* Mobile Menu Overlay */}
         {open && (
-          <div 
-            className="lg:hidden fixed inset-0 bg-black/60 z-40" 
-            onClick={() => setOpen(false)} 
+          <div
+            className="lg:hidden fixed inset-0 bg-black/60 z-40"
+            onClick={() => setOpen(false)}
           />
         )}
-        
+
         {/* Mobile Sidebar */}
         <aside
-          className={`lg:hidden fixed top-0 right-0 h-full w-72 bg-neutral-900 border-l border-white/10 transform transition-transform z-50 ${open ? 'translate-x-0' : 'translate-x-full'}`}
+          className={`lg:hidden fixed top-0 right-0 h-full w-80 bg-black border-l border-white/10 transform transition-transform duration-300 ease-in-out z-50 shadow-2xl ${open ? 'translate-x-0' : 'translate-x-full'}`}
           aria-label="Mobile Menu"
         >
-          <div className="p-4 flex items-center justify-between">
-            <span className="font-semibold">Menu</span>
-            <button aria-label="Close Menu" className="focus-ring" onClick={() => setOpen(false)}>✕</button>
+          <div className="p-6 flex items-center justify-between border-b border-white/5 bg-white/5">
+            <span className="font-bold text-lg tracking-tight uppercase text-neutral-400">Navigation</span>
+            <button
+              aria-label="Close Menu"
+              className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+              onClick={() => setOpen(false)}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
-          <nav className="flex flex-col gap-2 p-4">
-            {navItems.map((item) => (
-              <Link 
-                key={item.href} 
-                href={item.href} 
-                className={`px-3 py-2 rounded hover:bg-white/5 focus-ring transition-colors ${
-                  pathname === item.href ? 'bg-white/5 text-accent' : ''
-                }`}
-                onClick={() => setOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
-            
-            {/* Mobile Auth */}
-            <div className="pt-4 border-t border-white/10 mt-4">
+
+          <nav className="flex flex-col gap-1 p-4 overflow-y-auto h-[calc(100%-80px)]">
+            <div className="space-y-1 mb-6">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center px-4 py-4 rounded-xl transition-all duration-200 group ${pathname === item.href
+                      ? 'bg-accent text-white font-bold shadow-lg shadow-accent/20'
+                      : 'text-neutral-300 hover:bg-white/5 hover:text-white'
+                    }`}
+                  onClick={() => setOpen(false)}
+                >
+                  <span className="flex-1">{item.label}</span>
+                  {pathname === item.href && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                  )}
+                </Link>
+              ))}
+            </div>
+
+            {/* Mobile Auth Section */}
+            <div className="pt-6 border-t border-white/10 mt-2 space-y-4">
               {isAuthenticated ? (
-                <div className="space-y-2">
-                  <div className="px-3 py-2 text-sm text-neutral-300">
-                    Welcome, {user?.name}
+                <div className="space-y-4">
+                  <div className="px-4 py-3 bg-white/5 rounded-2xl border border-white/5">
+                    <div className="text-xs text-neutral-500 uppercase font-bold tracking-widest mb-1">Signed in as</div>
+                    <div className="text-white font-semibold">{user?.name}</div>
+                    <div className="text-accent text-xs font-medium uppercase mt-0.5">{user?.role}</div>
                   </div>
-                  {isAdmin() && (
-                    <>
-                      <Link
-                        href="/admin/dashboard"
-                        className="block px-3 py-2 rounded hover:bg-white/5 focus-ring"
-                        onClick={() => setOpen(false)}
-                      >
-                        Dashboard
-                      </Link>
-                      <Link
-                        href="/admin/leads"
-                        className="block px-3 py-2 rounded hover:bg-white/5 focus-ring relative"
-                        onClick={() => setOpen(false)}
-                      >
-                        Leads
-                        {notificationCount > 0 && (
-                          <span className="ml-2 inline-flex items-center justify-center h-5 w-5 rounded-full bg-red-500 text-xs font-bold">
-                            {notificationCount > 9 ? '9+' : notificationCount}
-                          </span>
-                        )}
-                      </Link>
-                      <Link
-                        href="/admin/approvals"
-                        className="block px-3 py-2 rounded hover:bg-white/5 focus-ring"
-                        onClick={() => setOpen(false)}
-                      >
-                        Approvals
-                      </Link>
-                      <Link
-                        href="/admin/reports"
-                        className="block px-3 py-2 rounded hover:bg-white/5 focus-ring"
-                        onClick={() => setOpen(false)}
-                      >
-                        📊 Monthly Reports
-                      </Link>
-                    </>
-                  )}
-                  {isBroker() && (
-                    <>
-                      <Link
-                        href="/broker/dashboard"
-                        className="block px-3 py-2 rounded hover:bg-white/5 focus-ring"
-                        onClick={() => setOpen(false)}
-                      >
-                        Dashboard
-                      </Link>
-                      <Link
-                        href="/broker/leads"
-                        className="block px-3 py-2 rounded hover:bg-white/5 focus-ring relative"
-                        onClick={() => setOpen(false)}
-                      >
-                        Leads
-                        {notificationCount > 0 && (
-                          <span className="ml-2 inline-flex items-center justify-center h-5 w-5 rounded-full bg-red-500 text-xs font-bold">
-                            {notificationCount > 9 ? '9+' : notificationCount}
-                          </span>
-                        )}
-                      </Link>
-                      <Link
-                        href="/broker/add-property"
-                        className="block px-3 py-2 rounded hover:bg-white/5 focus-ring"
-                        onClick={() => setOpen(false)}
-                      >
-                        + Add Property
-                      </Link>
-                    </>
-                  )}
+
+                  <div className="grid grid-cols-1 gap-2">
+                    {isAdmin() && (
+                      <>
+                        <Link
+                          href="/admin/dashboard"
+                          className="flex items-center px-4 py-3 rounded-xl bg-neutral-800/50 hover:bg-neutral-800 text-white transition-colors border border-white/5"
+                          onClick={() => setOpen(false)}
+                        >
+                          <span className="mr-3">🏠</span> Dashboard
+                        </Link>
+                        <Link
+                          href="/admin/leads"
+                          className="flex items-center px-4 py-3 rounded-xl bg-neutral-800/50 hover:bg-neutral-800 text-white transition-colors border border-white/5"
+                          onClick={() => setOpen(false)}
+                        >
+                          <span className="mr-3">📞</span> Leads
+                          {notificationCount > 0 && (
+                            <span className="ml-auto inline-flex items-center justify-center h-6 w-6 rounded-full bg-red-500 text-[10px] font-bold shadow-lg">
+                              {notificationCount > 9 ? '9+' : notificationCount}
+                            </span>
+                          )}
+                        </Link>
+                        <Link
+                          href="/admin/reports"
+                          className="flex items-center px-4 py-3 rounded-xl bg-neutral-800/50 hover:bg-neutral-800 text-white transition-colors border border-white/5"
+                          onClick={() => setOpen(false)}
+                        >
+                          <span className="mr-3">📊</span> Reports
+                        </Link>
+                      </>
+                    )}
+                    {isBroker() && (
+                      <>
+                        <Link
+                          href="/broker/dashboard"
+                          className="flex items-center px-4 py-3 rounded-xl bg-neutral-800/50 hover:bg-neutral-800 text-white transition-colors border border-white/5"
+                          onClick={() => setOpen(false)}
+                        >
+                          <span className="mr-3">🏠</span> Dashboard
+                        </Link>
+                        <Link
+                          href="/broker/leads"
+                          className="flex items-center px-4 py-3 rounded-xl bg-neutral-800/50 hover:bg-neutral-800 text-white transition-colors border border-white/5"
+                          onClick={() => setOpen(false)}
+                        >
+                          <span className="mr-3">📞</span> Leads
+                          {notificationCount > 0 && (
+                            <span className="ml-auto inline-flex items-center justify-center h-6 w-6 rounded-full bg-red-500 text-[10px] font-bold shadow-lg">
+                              {notificationCount > 9 ? '9+' : notificationCount}
+                            </span>
+                          )}
+                        </Link>
+                      </>
+                    )}
+                  </div>
+
                   <button
                     onClick={() => {
                       logout();
                       setOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 rounded hover:bg-white/5 focus-ring"
+                    className="w-full flex items-center px-4 py-4 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors font-medium border border-red-500/10"
                   >
-                    Logout
+                    <span className="mr-3">🚪</span> Logout
                   </button>
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="grid grid-cols-2 gap-3 p-2">
                   <button
                     onClick={() => {
                       handleLoginClick();
                       setOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 rounded hover:bg-white/5 focus-ring"
+                    className="flex items-center justify-center px-4 py-4 rounded-xl bg-neutral-800 text-white hover:bg-neutral-700 transition-colors font-bold text-sm border border-white/5"
                   >
                     Login
                   </button>
@@ -324,7 +330,7 @@ export default function Header() {
                       handleRegisterClick();
                       setOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 rounded hover:bg-white/5 focus-ring"
+                    className="flex items-center justify-center px-4 py-4 rounded-xl bg-accent text-white hover:bg-accent/90 transition-all font-bold text-sm shadow-lg shadow-accent/20"
                   >
                     Register
                   </button>
@@ -341,7 +347,7 @@ export default function Header() {
         onClose={handleCloseModals}
         onSwitchToRegister={handleSwitchToRegister}
       />
-      
+
       <RegisterModal
         isOpen={showRegisterModal}
         onClose={handleCloseModals}

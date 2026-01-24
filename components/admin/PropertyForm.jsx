@@ -36,10 +36,10 @@ export default function PropertyForm({ property, onClose, onSave }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
-  
+
   // Tabs state (Details / Make Deal)
   const [activeTab, setActiveTab] = useState('details');
-  
+
   // Deal form data
   const [dealData, setDealData] = useState({
     clientName: '',
@@ -47,7 +47,7 @@ export default function PropertyForm({ property, onClose, onSave }) {
     dealType: 'sale',
     commissionRate: ''
   });
-  
+
   const [dealError, setDealError] = useState('');
   const [dealFieldErrors, setDealFieldErrors] = useState({});
   const [availableCompanies, setAvailableCompanies] = useState([]);
@@ -79,20 +79,20 @@ export default function PropertyForm({ property, onClose, onSave }) {
         emirate: property.emirate || '',
         type: property.type || 'villa',
         purpose: property.purpose || 'sale',
-        status: property.status || 'available',
+        status: property.status || 'active',
         features: Array.isArray(property.features) ? property.features.join(', ') : (property.features || ''),
         location: property.location || '',
         yearBuilt: property.yearBuilt || '',
         parking: property.parking || '',
         furnished: property.furnished || false
       });
-      
+
       // Set existing images as previews
       if (property.images && property.images.length > 0) {
         setExistingImageUrls(property.images);
         setPreviewImages(property.images);
       }
-      
+
       // Auto-populate deal data from property
       setDealData({
         clientName: '',
@@ -110,7 +110,7 @@ export default function PropertyForm({ property, onClose, onSave }) {
       [name]: type === 'checkbox' ? checked : value
     }));
   };
-  
+
   const handleDealChange = (e) => {
     const { name, value } = e.target;
     setDealData(prev => ({
@@ -135,7 +135,7 @@ export default function PropertyForm({ property, onClose, onSave }) {
     if (validFiles.length === 0) return;
 
     setError('');
-    
+
     // Add to uploaded files
     setUploadedFiles(prev => [...prev, ...validFiles]);
 
@@ -152,7 +152,7 @@ export default function PropertyForm({ property, onClose, onSave }) {
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
-    
+
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       handleFiles(files);
@@ -178,7 +178,7 @@ export default function PropertyForm({ property, onClose, onSave }) {
 
   const removeImage = (index) => {
     const imageUrl = previewImages[index];
-    
+
     // Check if this is an existing URL (from server) or a new file preview (data: URL)
     if (imageUrl && imageUrl.startsWith('http') && !imageUrl.startsWith('data:')) {
       // This is an existing image URL - remove from existingImageUrls
@@ -189,7 +189,7 @@ export default function PropertyForm({ property, onClose, onSave }) {
       const dataUrlsBefore = previewImages
         .slice(0, index)
         .filter(img => img.startsWith('data:')).length;
-      
+
       // Remove the corresponding file from uploadedFiles
       setUploadedFiles(prev => {
         const newFiles = [...prev];
@@ -197,7 +197,7 @@ export default function PropertyForm({ property, onClose, onSave }) {
         return newFiles;
       });
     }
-    
+
     // Always remove from previews
     setPreviewImages(prev => prev.filter((_, i) => i !== index));
   };
@@ -223,19 +223,19 @@ export default function PropertyForm({ property, onClose, onSave }) {
       }
 
       // Get company ID from multiple sources
-      let companyId = property.owner?.companyId || 
-                     property.owner?.company_id || 
-                     user?.companyId || 
-                     user?.company_id ||
-                     property.companyId ||
-                     property.company_id;
-      
+      let companyId = property.owner?.companyId ||
+        property.owner?.company_id ||
+        user?.companyId ||
+        user?.company_id ||
+        property.companyId ||
+        property.company_id;
+
       // If still no companyId, use first available company
       if (!companyId && availableCompanies.length > 0) {
         companyId = availableCompanies[0].id;
         console.log('Using first available company:', availableCompanies[0].name);
       }
-      
+
       if (!companyId) {
         setDealError('Company not found. Please create a company first or ensure the property owner has a company.');
         setLoading(false);
@@ -265,10 +265,10 @@ export default function PropertyForm({ property, onClose, onSave }) {
       }
     } catch (err) {
       console.error('Deal creation error:', err);
-      const errorMessage = err.response?.data?.error || 
-                         err.response?.data?.details?.[0]?.message ||
-                         err.message ||
-                         'Failed to create deal';
+      const errorMessage = err.response?.data?.error ||
+        err.response?.data?.details?.[0]?.message ||
+        err.message ||
+        'Failed to create deal';
       setDealError(errorMessage);
     } finally {
       setLoading(false);
@@ -283,29 +283,39 @@ export default function PropertyForm({ property, onClose, onSave }) {
 
     try {
       // Ensure status is one of the valid enum values
-      const validStatus = ['active', 'closed', 'sold', 'rented'].includes(formData.status) 
-        ? formData.status 
+      const validStatus = ['active', 'closed', 'sold', 'rented'].includes(formData.status)
+        ? formData.status
         : 'active';
+
+      const parseNumber = (val) => {
+        if (val === '' || val === null || val === undefined) return undefined;
+        const parsed = parseFloat(val);
+        return isNaN(parsed) ? undefined : parsed;
+      };
 
       const submitData = {
         title: formData.title,
         description: formData.description || '',
         type: formData.type,
         purpose: formData.purpose,
-        price: parseFloat(formData.price),
-        area_sqft: parseInt(formData.area),
-        bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : undefined,
-        bathrooms: formData.bathrooms ? parseInt(formData.bathrooms) : undefined,
+        price: parseNumber(formData.price),
+        area_sqft: parseNumber(formData.area),
+        bedrooms: parseNumber(formData.bedrooms),
+        bathrooms: parseNumber(formData.bathrooms),
         emirate: formData.emirate,
         location: formData.location || '',
         features: formData.features ? formData.features.split(',').map(f => f.trim()).filter(Boolean) : [],
         status: validStatus,
       };
 
-      // Validate with Zod (without images for now, as they're uploaded separately)
-      // Create a temporary schema without images for validation
+      // Validate with Zod
       const validationData = { ...submitData };
-      propertySchema.parse(validationData);
+      try {
+        propertySchema.parse(validationData);
+      } catch (zodError) {
+        console.error('Frontend Validation Error (Zod):', zodError.errors.map(e => `${e.path.join('.')}: ${e.message}`));
+        throw zodError;
+      }
 
       // Helper function to append form data correctly
       const appendFormData = (formDataToSend, data) => {
@@ -328,14 +338,12 @@ export default function PropertyForm({ property, onClose, onSave }) {
       if (property) {
         // Update existing property
         const formDataToSend = new FormData();
-        
+
         // Add text fields
         appendFormData(formDataToSend, submitData);
 
-        // Add existing images as JSON array
-        if (existingImageUrls.length > 0) {
-          formDataToSend.append('existingImages', JSON.stringify(existingImageUrls));
-        }
+        // Always send existing images (even if empty array) to allow complete removal
+        formDataToSend.append('existingImages', JSON.stringify(existingImageUrls));
 
         // Add new image files
         uploadedFiles.forEach(file => {
@@ -348,7 +356,7 @@ export default function PropertyForm({ property, onClose, onSave }) {
       } else {
         // Create new property with file upload
         const formDataToSend = new FormData();
-        
+
         // Add text fields
         appendFormData(formDataToSend, submitData);
 
@@ -365,7 +373,7 @@ export default function PropertyForm({ property, onClose, onSave }) {
       onSave();
     } catch (error) {
       console.error('Property save error:', error);
-      
+
       // Handle Zod validation errors
       if (error.issues) {
         const errors = {};
@@ -376,11 +384,27 @@ export default function PropertyForm({ property, onClose, onSave }) {
         setError('Please fix the errors below');
       } else {
         // Handle API errors
-        const errorMessage = error.response?.data?.error || 
-                           error.response?.data?.details?.[0]?.message ||
-                           'Failed to save property';
+        console.error('API Error details:', error.response?.data);
+
+        // Map backend validation errors to fields if possible
+        if (error.response?.data?.details && Array.isArray(error.response.data.details)) {
+          const backendErrors = {};
+          error.response.data.details.forEach(err => {
+            const field = err.field || err.param;
+            if (field) {
+              backendErrors[field] = err.message || 'Invalid value';
+            }
+          });
+          setFieldErrors(prev => ({ ...prev, ...backendErrors }));
+        }
+
+        const errorMessage = error.response?.data?.error ||
+          (error.response?.data?.details && error.response.data.details[0]?.message) ||
+          error.message ||
+          'Failed to save property';
         setError(errorMessage);
       }
+
     } finally {
       setLoading(false);
     }
@@ -389,7 +413,7 @@ export default function PropertyForm({ property, onClose, onSave }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      
+
       <div className="relative bg-neutral-900 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-white/10">
         <div className="sticky top-0 bg-neutral-900 border-b border-white/10">
           <div className="p-6 flex justify-between items-center">
@@ -404,29 +428,27 @@ export default function PropertyForm({ property, onClose, onSave }) {
               ✕
             </button>
           </div>
-          
+
           {/* Tabs - Show "Make Deal" only for Admin on closed/sold/rented properties */}
           {property && isAdmin() && ['closed', 'sold', 'rented'].includes(formData.status) && (
             <div className="flex border-t border-white/10">
               <button
                 type="button"
                 onClick={() => setActiveTab('details')}
-                className={`flex-1 px-6 py-3 font-semibold transition-colors border-b-2 ${
-                  activeTab === 'details'
-                    ? 'text-accent border-accent'
-                    : 'text-neutral-400 border-transparent hover:text-white'
-                }`}
+                className={`flex-1 px-6 py-3 font-semibold transition-colors border-b-2 ${activeTab === 'details'
+                  ? 'text-accent border-accent'
+                  : 'text-neutral-400 border-transparent hover:text-white'
+                  }`}
               >
                 Property Details
               </button>
               <button
                 type="button"
                 onClick={() => setActiveTab('deal')}
-                className={`flex-1 px-6 py-3 font-semibold transition-colors border-b-2 ${
-                  activeTab === 'deal'
-                    ? 'text-accent border-accent'
-                    : 'text-neutral-400 border-transparent hover:text-white'
-                }`}
+                className={`flex-1 px-6 py-3 font-semibold transition-colors border-b-2 ${activeTab === 'deal'
+                  ? 'text-accent border-accent'
+                  : 'text-neutral-400 border-transparent hover:text-white'
+                  }`}
               >
                 🤝 Make Deal
               </button>
@@ -472,9 +494,8 @@ export default function PropertyForm({ property, onClose, onSave }) {
                   value={dealData.clientName}
                   onChange={handleDealChange}
                   required
-                  className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${
-                    dealFieldErrors.clientName ? 'border-red-500' : 'border-white/10'
-                  }`}
+                  className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${dealFieldErrors.clientName ? 'border-red-500' : 'border-white/10'
+                    }`}
                   placeholder="Ahmed Ali"
                 />
                 {dealFieldErrors.clientName && (
@@ -497,9 +518,8 @@ export default function PropertyForm({ property, onClose, onSave }) {
                     required
                     min="1"
                     step="0.01"
-                    className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${
-                      dealFieldErrors.dealValue ? 'border-red-500' : 'border-white/10'
-                    }`}
+                    className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${dealFieldErrors.dealValue ? 'border-red-500' : 'border-white/10'
+                      }`}
                     placeholder="2500000"
                   />
                   {dealFieldErrors.dealValue && (
@@ -517,9 +537,8 @@ export default function PropertyForm({ property, onClose, onSave }) {
                     value={dealData.dealType}
                     onChange={handleDealChange}
                     required
-                    className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${
-                      dealFieldErrors.dealType ? 'border-red-500' : 'border-white/10'
-                    }`}
+                    className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${dealFieldErrors.dealType ? 'border-red-500' : 'border-white/10'
+                      }`}
                   >
                     <option value="sale">Sale</option>
                     <option value="rent">Rent</option>
@@ -545,9 +564,8 @@ export default function PropertyForm({ property, onClose, onSave }) {
                   min="0"
                   max="1"
                   step="0.001"
-                  className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${
-                    dealFieldErrors.commissionRate ? 'border-red-500' : 'border-white/10'
-                  }`}
+                  className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${dealFieldErrors.commissionRate ? 'border-red-500' : 'border-white/10'
+                    }`}
                   placeholder="0.05"
                 />
                 {dealFieldErrors.commissionRate && (
@@ -612,391 +630,381 @@ export default function PropertyForm({ property, onClose, onSave }) {
           {activeTab === 'details' && (
             <>
               {/* Basic Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label htmlFor="title" className="block text-sm font-medium mb-2">
-                Property Title *
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                required
-                autoComplete="off"
-                className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${
-                  fieldErrors.title ? 'border-red-500' : 'border-white/10'
-                }`}
-                placeholder="Luxury Villa in Ajman"
-              />
-              {fieldErrors.title && (
-                <p className="mt-1 text-sm text-red-400">{fieldErrors.title}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="price" className="block text-sm font-medium mb-2">
-                Price (AED) *
-              </label>
-              <input
-                type="number"
-                id="price"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                required
-                className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${
-                  fieldErrors.price ? 'border-red-500' : 'border-white/10'
-                }`}
-                placeholder="1250000"
-              />
-              {fieldErrors.price && (
-                <p className="mt-1 text-sm text-red-400">{fieldErrors.price}</p>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="description" className="block text-sm font-medium mb-2">
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows={4}
-              className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${
-                fieldErrors.description ? 'border-red-500' : 'border-white/10'
-              }`}
-              placeholder="Detailed description of the property..."
-            />
-            {fieldErrors.description && (
-              <p className="mt-1 text-sm text-red-400">{fieldErrors.description}</p>
-            )}
-          </div>
-
-          {/* Property Details */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label htmlFor="bedrooms" className="block text-sm font-medium mb-2">
-                Bedrooms *
-              </label>
-              <input
-                type="number"
-                id="bedrooms"
-                name="bedrooms"
-                value={formData.bedrooms}
-                onChange={handleChange}
-                min="0"
-                className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${
-                  fieldErrors.bedrooms ? 'border-red-500' : 'border-white/10'
-                }`}
-              />
-              {fieldErrors.bedrooms && (
-                <p className="mt-1 text-sm text-red-400">{fieldErrors.bedrooms}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="bathrooms" className="block text-sm font-medium mb-2">
-                Bathrooms
-              </label>
-              <input
-                type="number"
-                id="bathrooms"
-                name="bathrooms"
-                value={formData.bathrooms}
-                onChange={handleChange}
-                min="0"
-                className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${
-                  fieldErrors.bathrooms ? 'border-red-500' : 'border-white/10'
-                }`}
-              />
-              {fieldErrors.bathrooms && (
-                <p className="mt-1 text-sm text-red-400">{fieldErrors.bathrooms}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="area" className="block text-sm font-medium mb-2">
-                Area (sqft) *
-              </label>
-              <input
-                type="number"
-                id="area"
-                name="area"
-                value={formData.area}
-                onChange={handleChange}
-                required
-                min="0"
-                className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${
-                  fieldErrors.area_sqft ? 'border-red-500' : 'border-white/10'
-                }`}
-              />
-              {fieldErrors.area_sqft && (
-                <p className="mt-1 text-sm text-red-400">{fieldErrors.area_sqft}</p>
-              )}
-            </div>
-          </div>
-
-          {/* Location & Type */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label htmlFor="emirate" className="block text-sm font-medium mb-2">
-                Emirate *
-              </label>
-              <select
-                id="emirate"
-                name="emirate"
-                value={formData.emirate}
-                onChange={handleChange}
-                required
-                className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${
-                  fieldErrors.emirate ? 'border-red-500' : 'border-white/10'
-                }`}
-              >
-                <option value="">Select Emirate</option>
-                <option value="Dubai">Dubai</option>
-                <option value="Abu Dhabi">Abu Dhabi</option>
-                <option value="Sharjah">Sharjah</option>
-                <option value="Ajman">Ajman</option>
-                <option value="Ras Al Khaimah">Ras Al Khaimah</option>
-                <option value="Fujairah">Fujairah</option>
-                <option value="Umm Al Quwain">Umm Al Quwain</option>
-              </select>
-              {fieldErrors.emirate && (
-                <p className="mt-1 text-sm text-red-400">{fieldErrors.emirate}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="type" className="block text-sm font-medium mb-2">
-                Property Type *
-              </label>
-              <select
-                id="type"
-                name="type"
-                value={formData.type}
-                onChange={handleChange}
-                required
-                className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${
-                  fieldErrors.type ? 'border-red-500' : 'border-white/10'
-                }`}
-              >
-                <option value="villa">Villa</option>
-                <option value="apartment">Apartment</option>
-                <option value="commercial">Commercial</option>
-                <option value="office">Office</option>
-                <option value="land">Land</option>
-              </select>
-              {fieldErrors.type && (
-                <p className="mt-1 text-sm text-red-400">{fieldErrors.type}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="purpose" className="block text-sm font-medium mb-2">
-                Purpose *
-              </label>
-              <select
-                id="purpose"
-                name="purpose"
-                value={formData.purpose}
-                onChange={handleChange}
-                required
-                className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${
-                  fieldErrors.purpose ? 'border-red-500' : 'border-white/10'
-                }`}
-              >
-                <option value="sale">Sale</option>
-                <option value="rent">Rent</option>
-              </select>
-              {fieldErrors.purpose && (
-                <p className="mt-1 text-sm text-red-400">{fieldErrors.purpose}</p>
-              )}
-            </div>
-          </div>
-
-          {/* Image Upload with Drag and Drop */}
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Property Images *
-            </label>
-            <div
-              ref={dropZoneRef}
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              className={`border-2 border-dashed rounded-lg p-6 transition-colors ${
-                isDragging
-                  ? 'border-accent bg-accent/10'
-                  : 'border-white/20 hover:border-white/30'
-              }`}
-            >
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleFileInput}
-                className="hidden"
-              />
-              <div className="text-center">
-                <div className="mb-4">
-                  <svg
-                    className="mx-auto h-12 w-12 text-neutral-400"
-                    stroke="currentColor"
-                    fill="none"
-                    viewBox="0 0 48 48"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="title" className="block text-sm font-medium mb-2">
+                    Property Title *
+                  </label>
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    required
+                    autoComplete="off"
+                    className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${fieldErrors.title ? 'border-red-500' : 'border-white/10'
+                      }`}
+                    placeholder="Luxury Villa in Ajman"
+                  />
+                  {fieldErrors.title && (
+                    <p className="mt-1 text-sm text-red-400">{fieldErrors.title}</p>
+                  )}
                 </div>
-                <p className="text-sm text-neutral-300 mb-2">
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="text-accent hover:text-accent/80 underline font-medium"
+
+                <div>
+                  <label htmlFor="price" className="block text-sm font-medium mb-2">
+                    Price (AED) *
+                  </label>
+                  <input
+                    type="number"
+                    id="price"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleChange}
+                    required
+                    className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${fieldErrors.price ? 'border-red-500' : 'border-white/10'
+                      }`}
+                    placeholder="1250000"
+                  />
+                  {fieldErrors.price && (
+                    <p className="mt-1 text-sm text-red-400">{fieldErrors.price}</p>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="description" className="block text-sm font-medium mb-2">
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  rows={4}
+                  className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${fieldErrors.description ? 'border-red-500' : 'border-white/10'
+                    }`}
+                  placeholder="Detailed description of the property..."
+                />
+                {fieldErrors.description && (
+                  <p className="mt-1 text-sm text-red-400">{fieldErrors.description}</p>
+                )}
+              </div>
+
+              {/* Property Details */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label htmlFor="bedrooms" className="block text-sm font-medium mb-2">
+                    Bedrooms *
+                  </label>
+                  <input
+                    type="number"
+                    id="bedrooms"
+                    name="bedrooms"
+                    value={formData.bedrooms}
+                    onChange={handleChange}
+                    min="0"
+                    className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${fieldErrors.bedrooms ? 'border-red-500' : 'border-white/10'
+                      }`}
+                  />
+                  {fieldErrors.bedrooms && (
+                    <p className="mt-1 text-sm text-red-400">{fieldErrors.bedrooms}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label htmlFor="bathrooms" className="block text-sm font-medium mb-2">
+                    Bathrooms
+                  </label>
+                  <input
+                    type="number"
+                    id="bathrooms"
+                    name="bathrooms"
+                    value={formData.bathrooms}
+                    onChange={handleChange}
+                    min="0"
+                    className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${fieldErrors.bathrooms ? 'border-red-500' : 'border-white/10'
+                      }`}
+                  />
+                  {fieldErrors.bathrooms && (
+                    <p className="mt-1 text-sm text-red-400">{fieldErrors.bathrooms}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label htmlFor="area" className="block text-sm font-medium mb-2">
+                    Area (sqft) *
+                  </label>
+                  <input
+                    type="number"
+                    id="area"
+                    name="area"
+                    value={formData.area}
+                    onChange={handleChange}
+                    required
+                    min="0"
+                    className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${fieldErrors.area_sqft ? 'border-red-500' : 'border-white/10'
+                      }`}
+                  />
+                  {fieldErrors.area_sqft && (
+                    <p className="mt-1 text-sm text-red-400">{fieldErrors.area_sqft}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Location & Type */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label htmlFor="emirate" className="block text-sm font-medium mb-2">
+                    Emirate *
+                  </label>
+                  <select
+                    id="emirate"
+                    name="emirate"
+                    value={formData.emirate}
+                    onChange={handleChange}
+                    required
+                    className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${fieldErrors.emirate ? 'border-red-500' : 'border-white/10'
+                      }`}
                   >
-                    Click to upload
-                  </button>
-                  {' or drag and drop'}
-                </p>
-                <p className="text-xs text-neutral-500">
-                  PNG, JPG, GIF up to 5MB each (Max 100 images)
-                </p>
-              </div>
-            </div>
+                    <option value="">Select Emirate</option>
+                    <option value="Dubai">Dubai</option>
+                    <option value="Abu Dhabi">Abu Dhabi</option>
+                    <option value="Sharjah">Sharjah</option>
+                    <option value="Ajman">Ajman</option>
+                    <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+                    <option value="Fujairah">Fujairah</option>
+                    <option value="Umm Al Quwain">Umm Al Quwain</option>
+                  </select>
+                  {fieldErrors.emirate && (
+                    <p className="mt-1 text-sm text-red-400">{fieldErrors.emirate}</p>
+                  )}
+                </div>
 
-            {/* Image Previews */}
-            {previewImages.length > 0 && (
-              <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-                {previewImages.map((preview, index) => (
-                  <div key={index} className="relative group">
-                    <div className="relative aspect-square rounded-lg overflow-hidden border border-white/10">
-                      {preview.startsWith('http') || preview.startsWith('data:') ? (
-                        <Image
-                          src={preview}
-                          alt={`Preview ${index + 1}`}
-                          fill
-                          sizes="(max-width: 768px) 50vw, 25vw"
-                          className="object-cover"
-                          unoptimized={shouldUnoptimizeImage(preview)}
+                <div>
+                  <label htmlFor="type" className="block text-sm font-medium mb-2">
+                    Property Type *
+                  </label>
+                  <select
+                    id="type"
+                    name="type"
+                    value={formData.type}
+                    onChange={handleChange}
+                    required
+                    className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${fieldErrors.type ? 'border-red-500' : 'border-white/10'
+                      }`}
+                  >
+                    <option value="villa">Villa</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="commercial">Commercial</option>
+                    <option value="office">Office</option>
+                    <option value="land">Land</option>
+                  </select>
+                  {fieldErrors.type && (
+                    <p className="mt-1 text-sm text-red-400">{fieldErrors.type}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label htmlFor="purpose" className="block text-sm font-medium mb-2">
+                    Purpose *
+                  </label>
+                  <select
+                    id="purpose"
+                    name="purpose"
+                    value={formData.purpose}
+                    onChange={handleChange}
+                    required
+                    className={`w-full px-4 py-3 bg-neutral-800 border rounded-lg focus-ring ${fieldErrors.purpose ? 'border-red-500' : 'border-white/10'
+                      }`}
+                  >
+                    <option value="sale">Sale</option>
+                    <option value="rent">Rent</option>
+                  </select>
+                  {fieldErrors.purpose && (
+                    <p className="mt-1 text-sm text-red-400">{fieldErrors.purpose}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Image Upload with Drag and Drop */}
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Property Images *
+                </label>
+                <div
+                  ref={dropZoneRef}
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  className={`border-2 border-dashed rounded-lg p-6 transition-colors ${isDragging
+                    ? 'border-accent bg-accent/10'
+                    : 'border-white/20 hover:border-white/30'
+                    }`}
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileInput}
+                    className="hidden"
+                  />
+                  <div className="text-center">
+                    <div className="mb-4">
+                      <svg
+                        className="mx-auto h-12 w-12 text-neutral-400"
+                        stroke="currentColor"
+                        fill="none"
+                        viewBox="0 0 48 48"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
-                      ) : (
-                        <div className="flex items-center justify-center h-full bg-neutral-800 text-neutral-400">
-                          Invalid Image
-                        </div>
-                      )}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => removeImage(index)}
-                      className="absolute top-2 right-2 p-1 bg-red-500 hover:bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                      aria-label="Remove image"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                    </button>
+                    </div>
+                    <p className="text-sm text-neutral-300 mb-2">
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="text-accent hover:text-accent/80 underline font-medium"
+                      >
+                        Click to upload
+                      </button>
+                      {' or drag and drop'}
+                    </p>
+                    <p className="text-xs text-neutral-500">
+                      PNG, JPG, GIF up to 5MB each (Max 100 images)
+                    </p>
                   </div>
-                ))}
+                </div>
+
+                {/* Image Previews */}
+                {previewImages.length > 0 && (
+                  <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {previewImages.map((preview, index) => (
+                      <div key={index} className="relative group">
+                        <div className="relative aspect-square rounded-lg overflow-hidden border border-white/10">
+                          {preview.startsWith('http') || preview.startsWith('data:') ? (
+                            <Image
+                              src={preview}
+                              alt={`Preview ${index + 1}`}
+                              fill
+                              sizes="(max-width: 768px) 50vw, 25vw"
+                              className="object-cover"
+                              unoptimized={shouldUnoptimizeImage(preview)}
+                            />
+                          ) : (
+                            <div className="flex items-center justify-center h-full bg-neutral-800 text-neutral-400">
+                              Invalid Image
+                            </div>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="absolute top-2 right-2 p-1 bg-red-500 hover:bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                          aria-label="Remove image"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          {/* Location */}
-          <div>
-            <label htmlFor="location" className="block text-sm font-medium mb-2">
-              Specific Location
-            </label>
-            <input
-              type="text"
-              id="location"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              autoComplete="address-line1"
-              className="w-full px-4 py-3 bg-neutral-800 border border-white/10 rounded-lg focus-ring"
-              placeholder="Al Nuaimiya, Ajman"
-            />
-          </div>
+              {/* Location */}
+              <div>
+                <label htmlFor="location" className="block text-sm font-medium mb-2">
+                  Specific Location
+                </label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  autoComplete="address-line1"
+                  className="w-full px-4 py-3 bg-neutral-800 border border-white/10 rounded-lg focus-ring"
+                  placeholder="Al Nuaimiya, Ajman"
+                />
+              </div>
 
-          <div>
-            <label htmlFor="features" className="block text-sm font-medium mb-2">
-              Features
-            </label>
-            <textarea
-              id="features"
-              name="features"
-              value={formData.features}
-              onChange={handleChange}
-              rows={3}
-              className="w-full px-4 py-3 bg-neutral-800 border border-white/10 rounded-lg focus-ring"
-              placeholder="Swimming pool, Garden, Balcony, etc."
-            />
-          </div>
+              <div>
+                <label htmlFor="features" className="block text-sm font-medium mb-2">
+                  Features
+                </label>
+                <textarea
+                  id="features"
+                  name="features"
+                  value={formData.features}
+                  onChange={handleChange}
+                  rows={3}
+                  className="w-full px-4 py-3 bg-neutral-800 border border-white/10 rounded-lg focus-ring"
+                  placeholder="Swimming pool, Garden, Balcony, etc."
+                />
+              </div>
 
-          {/* Status & Furnished */}
-          <div className="flex items-center gap-6">
-            <div>
-              <label htmlFor="status" className="block text-sm font-medium mb-2">
-                Status
-              </label>
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="px-4 py-3 bg-neutral-800 border border-white/10 rounded-lg focus-ring"
-              >
-                <option value="active">Active</option>
-                <option value="closed">Closed</option>
-                <option value="sold">Sold</option>
-                <option value="rented">Rented</option>
-              </select>
-            </div>
+              {/* Status & Furnished */}
+              <div className="flex items-center gap-6">
+                <div>
+                  <label htmlFor="status" className="block text-sm font-medium mb-2">
+                    Status
+                  </label>
+                  <select
+                    id="status"
+                    name="status"
+                    value={formData.status}
+                    onChange={handleChange}
+                    className="px-4 py-3 bg-neutral-800 border border-white/10 rounded-lg focus-ring"
+                  >
+                    <option value="active">Active</option>
+                    <option value="closed">Closed</option>
+                    <option value="sold">Sold</option>
+                    <option value="rented">Rented</option>
+                  </select>
+                </div>
 
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="furnished"
-                name="furnished"
-                checked={formData.furnished}
-                onChange={handleChange}
-                className="w-4 h-4 text-accent bg-neutral-800 border-white/10 rounded focus-ring"
-              />
-              <label htmlFor="furnished" className="text-sm font-medium">
-                Furnished
-              </label>
-            </div>
-          </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="furnished"
+                    name="furnished"
+                    checked={formData.furnished}
+                    onChange={handleChange}
+                    className="w-4 h-4 text-accent bg-neutral-800 border-white/10 rounded focus-ring"
+                  />
+                  <label htmlFor="furnished" className="text-sm font-medium">
+                    Furnished
+                  </label>
+                </div>
+              </div>
 
-          {/* Submit Buttons - Property Details */}
-          <div className="flex justify-end gap-4 pt-6 border-t border-white/10">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-6 py-3 text-neutral-300 hover:text-white transition-colors focus-ring"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-6 py-3 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-colors focus-ring disabled:opacity-50"
-            >
-              {loading ? 'Saving...' : (property ? 'Update Property' : 'Add Property')}
-            </button>
-          </div>
+              {/* Submit Buttons - Property Details */}
+              <div className="flex justify-end gap-4 pt-6 border-t border-white/10">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-6 py-3 text-neutral-300 hover:text-white transition-colors focus-ring"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-6 py-3 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-colors focus-ring disabled:opacity-50"
+                >
+                  {loading ? 'Saving...' : (property ? 'Update Property' : 'Add Property')}
+                </button>
+              </div>
             </>
           )}
         </form>
