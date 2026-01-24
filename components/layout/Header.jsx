@@ -56,19 +56,19 @@ export default function Header() {
         <div className="container-x" suppressHydrationWarning>
           <div className="flex items-center justify-between h-20 gap-8" suppressHydrationWarning>
             {/* Logo */}
-            <Link href="/" className="font-bold tracking-wide text-xl shrink-0" suppressHydrationWarning>
-              Alrabie <span className="text-accent">Real Estate</span>
+            <Link href="/" className="font-bold tracking-tight text-lg sm:text-xl shrink-0" suppressHydrationWarning>
+              Alrabie <span className="text-accent underline decoration-accent/30 underline-offset-4">Real Estate</span>
             </Link>
 
             {/* Main Navigation */}
-            <nav className="hidden lg:flex items-center gap-8 text-[15px] font-medium text-neutral-200" suppressHydrationWarning>
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-[15px] font-medium text-neutral-200" suppressHydrationWarning>
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={`hover:text-accent focus-ring transition-all duration-200 pb-1 border-b-2 ${pathname === item.href
-                      ? 'text-accent border-accent'
-                      : 'border-transparent hover:border-accent/50'
+                    ? 'text-accent border-accent'
+                    : 'border-transparent hover:border-accent/50'
                     }`}
                   suppressHydrationWarning
                 >
@@ -78,7 +78,7 @@ export default function Header() {
             </nav>
 
             {/* Auth Section */}
-            <div className="flex items-center gap-4 shrink-0" suppressHydrationWarning>
+            <div className="flex items-center gap-2 sm:gap-4 shrink-0" suppressHydrationWarning>
               {isAuthenticated ? (
                 <>
                   {/* User Info */}
@@ -183,10 +183,12 @@ export default function Header() {
 
               <button
                 aria-label="Open Menu"
-                className="lg:hidden text-2xl text-white hover:text-accent transition-colors p-2"
+                className="lg:hidden text-white hover:text-accent transition-all p-2 bg-white/5 rounded-lg active:scale-95 border border-white/10"
                 onClick={() => setOpen(true)}
               >
-                ☰
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
               </button>
             </div>
           </div>
@@ -202,126 +204,144 @@ export default function Header() {
 
         {/* Mobile Sidebar */}
         <aside
-          className={`lg:hidden fixed top-0 right-0 h-full w-80 bg-black border-l border-white/10 transform transition-transform duration-300 ease-in-out z-50 shadow-2xl ${open ? 'translate-x-0' : 'translate-x-full'}`}
+          className={`lg:hidden fixed top-0 right-0 h-screen w-[280px] bg-neutral-900 border-l border-white/10 shadow-2xl transform transition-transform duration-300 ease-in-out z-[100] ${open ? 'translate-x-0' : 'translate-x-full'}`}
           aria-label="Mobile Menu"
         >
-          <div className="p-6 flex items-center justify-between border-b border-white/5 bg-white/5">
-            <span className="font-bold text-lg tracking-tight uppercase text-neutral-400">Navigation</span>
-            <button
-              aria-label="Close Menu"
-              className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
-              onClick={() => setOpen(false)}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <nav className="flex flex-col gap-1 p-4 overflow-y-auto h-[calc(100%-80px)]">
-            <div className="space-y-1 mb-6">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex items-center px-4 py-4 rounded-xl transition-all duration-200 group ${pathname === item.href
-                      ? 'bg-accent text-white font-bold shadow-lg shadow-accent/20'
-                      : 'text-neutral-300 hover:bg-white/5 hover:text-white'
-                    }`}
-                  onClick={() => setOpen(false)}
-                >
-                  <span className="flex-1">{item.label}</span>
-                  {pathname === item.href && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                  )}
-                </Link>
-              ))}
+          <div className="flex flex-col h-full">
+            <div className="p-6 flex items-center justify-between border-b border-white/5 bg-neutral-800/20">
+              <span className="font-bold text-sm tracking-widest uppercase text-neutral-400">Navigation</span>
+              <button
+                aria-label="Close Menu"
+                className="p-2 hover:bg-white/5 rounded-lg transition-colors text-white"
+                onClick={() => setOpen(false)}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
 
-            {/* Mobile Auth Section */}
-            <div className="pt-6 border-t border-white/10 mt-2 space-y-4">
-              {isAuthenticated ? (
-                <div className="space-y-4">
-                  <div className="px-4 py-3 bg-white/5 rounded-2xl border border-white/5">
-                    <div className="text-xs text-neutral-500 uppercase font-bold tracking-widest mb-1">Signed in as</div>
-                    <div className="text-white font-semibold">{user?.name}</div>
-                    <div className="text-accent text-xs font-medium uppercase mt-0.5">{user?.role}</div>
+            <div className="flex-1 overflow-y-auto pt-4">
+              <nav className="px-4 space-y-1">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 ${pathname === item.href
+                        ? 'bg-accent/10 text-accent font-bold border border-accent/20'
+                        : 'text-neutral-200 hover:bg-white/5 hover:text-white'
+                      }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+
+              <div className="px-4 mt-6">
+                <div className="h-px bg-white/5" />
+              </div>
+
+              {isAuthenticated && (
+                <div className="p-4 space-y-3">
+                  <div className="px-4 py-3 bg-neutral-800/30 rounded-xl border border-white/5">
+                    <div className="text-[10px] text-neutral-500 uppercase font-black tracking-widest mb-1">Account</div>
+                    <div className="text-white font-bold text-sm truncate">{user?.name}</div>
+                    <div className="text-accent text-[11px] font-bold uppercase mt-0.5">{user?.role}</div>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-2">
+                  <div className="space-y-1">
                     {isAdmin() && (
-                      <>
+                      <div className="grid grid-cols-1 gap-1.5">
                         <Link
                           href="/admin/dashboard"
-                          className="flex items-center px-4 py-3 rounded-xl bg-neutral-800/50 hover:bg-neutral-800 text-white transition-colors border border-white/5"
+                          className="flex items-center px-4 py-3 rounded-lg bg-neutral-800/40 text-neutral-200 hover:text-white border border-white/5 text-sm font-medium"
                           onClick={() => setOpen(false)}
                         >
-                          <span className="mr-3">🏠</span> Dashboard
+                          🏰 Dashboard
                         </Link>
                         <Link
                           href="/admin/leads"
-                          className="flex items-center px-4 py-3 rounded-xl bg-neutral-800/50 hover:bg-neutral-800 text-white transition-colors border border-white/5"
+                          className="flex items-center justify-between px-4 py-3 rounded-lg bg-neutral-800/40 text-neutral-200 hover:text-white border border-white/5 text-sm font-medium"
                           onClick={() => setOpen(false)}
                         >
-                          <span className="mr-3">📞</span> Leads
+                          <span className="flex items-center gap-2">📞 Leads</span>
                           {notificationCount > 0 && (
-                            <span className="ml-auto inline-flex items-center justify-center h-6 w-6 rounded-full bg-red-500 text-[10px] font-bold shadow-lg">
+                            <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-red-600 text-[10px] font-bold text-white">
                               {notificationCount > 9 ? '9+' : notificationCount}
                             </span>
                           )}
+                        </Link>
+                        <Link
+                          href="/admin/approvals"
+                          className="flex items-center px-4 py-3 rounded-lg bg-neutral-800/40 text-neutral-200 hover:text-white border border-white/5 text-sm font-medium"
+                          onClick={() => setOpen(false)}
+                        >
+                          ✅ Approvals
                         </Link>
                         <Link
                           href="/admin/reports"
-                          className="flex items-center px-4 py-3 rounded-xl bg-neutral-800/50 hover:bg-neutral-800 text-white transition-colors border border-white/5"
+                          className="flex items-center px-4 py-3 rounded-lg bg-neutral-800/40 text-neutral-200 hover:text-white border border-white/5 text-sm font-medium"
                           onClick={() => setOpen(false)}
                         >
-                          <span className="mr-3">📊</span> Reports
+                          📊 Reports
                         </Link>
-                      </>
+                      </div>
                     )}
                     {isBroker() && (
-                      <>
+                      <div className="grid grid-cols-1 gap-1.5">
                         <Link
                           href="/broker/dashboard"
-                          className="flex items-center px-4 py-3 rounded-xl bg-neutral-800/50 hover:bg-neutral-800 text-white transition-colors border border-white/5"
+                          className="flex items-center px-4 py-3 rounded-lg bg-neutral-800/40 text-neutral-200 hover:text-white border border-white/5 text-sm font-medium"
                           onClick={() => setOpen(false)}
                         >
-                          <span className="mr-3">🏠</span> Dashboard
+                          🏠 Dashboard
                         </Link>
                         <Link
                           href="/broker/leads"
-                          className="flex items-center px-4 py-3 rounded-xl bg-neutral-800/50 hover:bg-neutral-800 text-white transition-colors border border-white/5"
+                          className="flex items-center justify-between px-4 py-3 rounded-lg bg-neutral-800/40 text-neutral-200 hover:text-white border border-white/5 text-sm font-medium"
                           onClick={() => setOpen(false)}
                         >
-                          <span className="mr-3">📞</span> Leads
+                          <span className="flex items-center gap-2">📞 Leads</span>
                           {notificationCount > 0 && (
-                            <span className="ml-auto inline-flex items-center justify-center h-6 w-6 rounded-full bg-red-500 text-[10px] font-bold shadow-lg">
+                            <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-red-600 text-[10px] font-bold text-white">
                               {notificationCount > 9 ? '9+' : notificationCount}
                             </span>
                           )}
                         </Link>
-                      </>
+                        <Link
+                          href="/broker/add-property"
+                          className="flex items-center px-4 py-3 rounded-lg bg-green-600/20 text-green-400 hover:bg-green-600/30 border border-green-500/20 text-sm font-bold"
+                          onClick={() => setOpen(false)}
+                        >
+                          ➕ Add Property
+                        </Link>
+                      </div>
                     )}
                   </div>
-
-                  <button
-                    onClick={() => {
-                      logout();
-                      setOpen(false);
-                    }}
-                    className="w-full flex items-center px-4 py-4 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors font-medium border border-red-500/10"
-                  >
-                    <span className="mr-3">🚪</span> Logout
-                  </button>
                 </div>
+              )}
+            </div>
+
+            <div className="p-4 border-t border-white/5 bg-neutral-800/20">
+              {isAuthenticated ? (
+                <button
+                  onClick={() => {
+                    logout();
+                    setOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center px-4 py-3.5 rounded-xl text-red-400 hover:bg-red-500/10 transition-all font-bold text-sm border border-red-500/10"
+                >
+                  Sign Out
+                </button>
               ) : (
-                <div className="grid grid-cols-2 gap-3 p-2">
+                <div className="grid grid-cols-1 gap-2">
                   <button
                     onClick={() => {
                       handleLoginClick();
                       setOpen(false);
                     }}
-                    className="flex items-center justify-center px-4 py-4 rounded-xl bg-neutral-800 text-white hover:bg-neutral-700 transition-colors font-bold text-sm border border-white/5"
+                    className="flex items-center justify-center px-4 py-3.5 rounded-xl bg-neutral-800 text-white hover:bg-neutral-700 transition-colors font-bold text-sm border border-white/5"
                   >
                     Login
                   </button>
@@ -330,14 +350,14 @@ export default function Header() {
                       handleRegisterClick();
                       setOpen(false);
                     }}
-                    className="flex items-center justify-center px-4 py-4 rounded-xl bg-accent text-white hover:bg-accent/90 transition-all font-bold text-sm shadow-lg shadow-accent/20"
+                    className="flex items-center justify-center px-4 py-3.5 rounded-xl bg-accent text-white hover:bg-accent/90 transition-all font-bold text-sm shadow-xl shadow-accent/20"
                   >
                     Register
                   </button>
                 </div>
               )}
             </div>
-          </nav>
+          </div>
         </aside>
       </header>
 
