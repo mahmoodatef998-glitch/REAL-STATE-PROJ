@@ -184,17 +184,31 @@ export default function LeadsPage() {
                   {filteredLeads.map((lead) => (
                     <tr key={lead.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                       <td className="px-4 py-4">
-                        <div className="flex items-center gap-2">
-                          {lead.status === 'new' && (
-                            <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse" title="New Lead" />
+                        <div className="flex flex-col gap-1">
+                          <div className="flex items-center gap-2">
+                            {lead.status === 'new' && (
+                              <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse" title="New Lead" />
+                            )}
+                            <span className="font-medium text-white">{lead.name}</span>
+                            {lead.isBehavioral && (
+                              <span className="px-2 py-0.5 rounded text-[10px] font-black bg-orange-600 text-white animate-bounce shadow-lg shadow-orange-600/20" title="High Intent detected by behavior">
+                                🔥 HOT LEAD
+                              </span>
+                            )}
+                          </div>
+                          {lead.message && (
+                            <div className="text-xs text-neutral-400 italic max-w-xs">{lead.message}</div>
                           )}
-                          <span className="font-medium text-white">{lead.name}</span>
                         </div>
                       </td>
                       <td className="px-4 py-4 text-neutral-300">
-                        <a href={`tel:${lead.phone}`} className="hover:text-accent transition-colors">
-                          {lead.phone}
-                        </a>
+                        {lead.phone ? (
+                          <a href={`tel:${lead.phone}`} className="hover:text-accent transition-colors flex items-center gap-2">
+                            <span>📞</span> {lead.phone}
+                          </a>
+                        ) : (
+                          <span className="text-neutral-500 italic text-xs">No phone provided</span>
+                        )}
                       </td>
                       <td className="px-4 py-4">
                         {lead.property ? (

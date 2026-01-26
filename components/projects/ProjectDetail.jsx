@@ -6,10 +6,13 @@ import { useQuery } from '@tanstack/react-query';
 import { getPropertyById } from '../../lib/api/properties';
 import { shouldUnoptimizeImage } from '../../lib/utils/imageHelpers';
 import LeadInterestModal from '../properties/LeadInterestModal';
+import { trackActivity } from '../../lib/utils/tracking';
 
 export default function ProjectDetail({ projectId }) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showExpressInterestModal, setShowExpressInterestModal] = useState(false);
+  const [viewedImages, setViewedImages] = useState(new Set([0]));
+  const hasTrackedAllImages = useRef(false);
   const intervalRef = useRef(null);
   const isPausedRef = useRef(false);
 
@@ -22,6 +25,30 @@ export default function ProjectDetail({ projectId }) {
   // Get images from project (safe access)
   const images = project?.images || [];
   const imagesLength = images.length;
+
+  // Track initial page view
+  useEffect(() => {
+    if (projectId) {
+      trackActivity(projectId, 'view_page');
+    }
+  }, [projectId]);
+
+  // Track image views to detect "Viewed All Images"
+  useEffect(() => {
+    if (imagesLength > 0 && !hasTrackedAllImages.current) {
+      const newSet = new Set(viewedImages);
+      newSet.add(selectedImageIndex);
+
+      if (newSet.size !== viewedImages.size) {
+        setViewedImages(newSet);
+      }
+
+      if (newSet.size === imagesLength && imagesLength > 1) {
+        trackActivity(projectId, 'view_all_images');
+        hasTrackedAllImages.current = true;
+      }
+    }
+  }, [selectedImageIndex, imagesLength, projectId, viewedImages]);
 
   // Auto-slide images every 5 seconds (MUST be before any conditional returns)
   useEffect(() => {

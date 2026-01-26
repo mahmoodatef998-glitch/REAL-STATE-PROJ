@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { useCreateLead } from '../../hooks/useLeads';
+import { getGuestId } from '../../lib/utils/tracking';
 
 export default function LeadInterestModal({ isOpen, onClose, property, openEmailAfterSubmit = false }) {
   const [formData, setFormData] = useState({
@@ -49,7 +50,8 @@ export default function LeadInterestModal({ isOpen, onClose, property, openEmail
       const leadData = {
         name: formData.name.trim(),
         phone: formData.phone.trim(),
-        property_id: property.id
+        property_id: property.id,
+        guest_id: getGuestId()
       };
 
       const result = await createLead.mutateAsync(leadData);
