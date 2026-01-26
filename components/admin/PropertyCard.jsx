@@ -45,34 +45,57 @@ export default function PropertyCard({ property, onEdit, onDelete }) {
             No Image
           </div>
         )}
-        
+
         {/* Status Badge */}
         <div className="absolute top-3 left-3">
-          <span className={`px-2 py-1 rounded text-xs font-bold uppercase tracking-wide ${
-            property.status === 'active'
-              ? 'bg-green-500/20 text-green-300 border border-green-500/30'
-              : property.status === 'closed'
-              ? 'bg-gray-600/80 text-white border border-gray-500'
-              : 'bg-red-500/20 text-red-300 border border-red-500/30'
-          }`}>
-            {property.status === 'active' ? 'ACTIVE' : 
-             property.status === 'closed' ? 'CLOSED' : 
-             property.status === 'sold' ? 'SOLD' :
-             property.status === 'rented' ? 'RENTED' :
-             property.status.toUpperCase()}
-          </span>
+          {(() => {
+            const s = (property.status || 'active').toLowerCase();
+            const p = (property.purpose || '').toLowerCase();
+
+            let label = s.toUpperCase();
+            let style = 'bg-red-500/20 text-red-300 border border-red-500/30';
+
+            if (s === 'active') {
+              style = 'bg-green-500/20 text-green-300 border border-green-500/30';
+              label = 'ACTIVE';
+            } else if (['closed', 'sold', 'rented'].includes(s)) {
+              if (s === 'sold' || (s === 'closed' && p === 'sale')) {
+                label = 'SOLD';
+                style = 'bg-red-600 text-white border border-red-700 font-black';
+              } else if (s === 'rented' || (s === 'closed' && p === 'rent')) {
+                label = 'RENTED';
+                style = 'bg-blue-600 text-white border border-blue-700 font-black';
+              } else {
+                label = 'CLOSED';
+                style = 'bg-gray-700 text-white border border-gray-600 font-black';
+              }
+            }
+
+            return (
+              <span className={`px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-widest ${style}`}>
+                {label}
+              </span>
+            );
+          })()}
         </div>
 
-        {/* Purpose Badge (SALE / RENT) */}
-        {(() => { const p = (property.purpose || '').toLowerCase(); return p ? (
-          <div className="absolute top-3 right-3">
-            <span className={`px-2 py-1 rounded text-xs font-bold uppercase tracking-wide border ${
-              p === 'sale' ? 'bg-red-600 text-white border-red-700' : 'bg-blue-600 text-white border-blue-700'
-            }`}>
-              {p === 'sale' ? 'SALE' : 'RENT'}
-            </span>
-          </div>
-        ) : null; })()}
+        {/* Purpose Badge (SALE / RENT) - Only show if not fully closed/sold/rented */}
+        {(() => {
+          const s = (property.status || 'active').toLowerCase();
+          const p = (property.purpose || '').toLowerCase();
+          const isClosed = ['closed', 'sold', 'rented'].includes(s);
+
+          if (!p || isClosed) return null;
+
+          return (
+            <div className="absolute top-3 right-3">
+              <span className={`px-2 py-1 rounded text-[10px] font-black uppercase tracking-widest border ${p === 'sale' ? 'bg-red-600 text-white border-red-700' : 'bg-blue-600 text-white border-blue-700'
+                }`}>
+                {p === 'sale' ? 'SALE' : 'RENT'}
+              </span>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Content */}
@@ -91,7 +114,7 @@ export default function PropertyCard({ property, onEdit, onDelete }) {
             <span className="text-neutral-400">📍</span>
             <span>{property.emirate}, UAE</span>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
               <span className="text-neutral-400">🛏️</span>
@@ -127,14 +150,14 @@ export default function PropertyCard({ property, onEdit, onDelete }) {
           >
             View
           </Link>
-          
+
           <button
             onClick={() => onEdit(property)}
             className="px-3 py-2 bg-accent hover:bg-accent/90 text-white text-sm font-medium rounded transition-colors focus-ring"
           >
             Edit
           </button>
-          
+
           <button
             onClick={onDelete}
             className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded transition-colors focus-ring"

@@ -40,9 +40,25 @@ export default function DealCard({ deal, onEdit, onDelete, showActions = true })
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className={`px-2 py-1 text-xs font-semibold rounded border ${statusColors[status] || statusColors.open}`}>
-              {status.toUpperCase()}
-            </span>
+            {(() => {
+              const s = (status || 'open').toLowerCase();
+              const type = (dealType || 'sale').toLowerCase();
+
+              let label = s.toUpperCase();
+              let style = statusColors[s] || statusColors.open;
+
+              if (s === 'closed') {
+                if (type === 'sale') label = 'SOLD';
+                else if (type === 'rent') label = 'RENTED';
+                else label = 'CLOSED';
+              }
+
+              return (
+                <span className={`px-2 py-1 text-[10px] font-black uppercase tracking-widest rounded border ${style}`}>
+                  {label}
+                </span>
+              );
+            })()}
             <span className={`px-2 py-1 text-xs font-semibold rounded border ${dealTypeColors[dealType] || dealTypeColors.sale}`}>
               {dealType.toUpperCase()}
             </span>
@@ -77,11 +93,10 @@ export default function DealCard({ deal, onEdit, onDelete, showActions = true })
             </button>
             <button
               onClick={handleDelete}
-              className={`p-2 transition-colors focus-ring rounded ${
-                showConfirm 
-                  ? 'text-red-400 hover:text-red-300' 
+              className={`p-2 transition-colors focus-ring rounded ${showConfirm
+                  ? 'text-red-400 hover:text-red-300'
                   : 'text-neutral-400 hover:text-red-400'
-              }`}
+                }`}
               title={showConfirm ? 'Confirm Delete' : 'Delete Deal'}
             >
               {showConfirm ? '🗑️ ✓' : '🗑️'}
@@ -95,7 +110,7 @@ export default function DealCard({ deal, onEdit, onDelete, showActions = true })
         {deal.property && (
           <div className="flex items-center gap-2">
             <span className="text-neutral-400">Property:</span>
-            <Link 
+            <Link
               href={`/properties/${deal.property.id}`}
               className="text-accent hover:text-accent/80 font-medium"
             >
@@ -125,7 +140,7 @@ export default function DealCard({ deal, onEdit, onDelete, showActions = true })
             {dealValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} AED
           </span>
         </div>
-        
+
         {commissionValue > 0 ? (
           <>
             <div className="flex justify-between items-center">
@@ -134,7 +149,7 @@ export default function DealCard({ deal, onEdit, onDelete, showActions = true })
                 {commissionValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} AED
               </span>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-4 pt-2 border-t border-white/5">
               <div>
                 <div className="text-xs text-neutral-400 mb-1">Broker Share (70%)</div>

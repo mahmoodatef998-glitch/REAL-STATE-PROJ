@@ -40,14 +40,37 @@ export default function ProjectCard({ project }) {
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-            {purpose && (
-              <div className="absolute top-3 left-3">
-                <span className={`px-2 py-1 rounded text-xs font-bold uppercase tracking-wide border ${purpose === 'sale' ? 'bg-red-600 text-white border-red-700' : 'bg-blue-600 text-white border-blue-700'
-                  }`}>
-                  {purpose === 'sale' ? 'SALE' : 'RENT'}
-                </span>
-              </div>
-            )}
+            {(() => {
+              const s = (project.status || 'active').toLowerCase();
+              const p = (project.purpose || '').toLowerCase();
+
+              let label = '';
+              let badgeColor = '';
+
+              if (['closed', 'sold', 'rented'].includes(s)) {
+                if (s === 'sold' || (s === 'closed' && p === 'sale')) {
+                  label = 'SOLD';
+                  badgeColor = 'bg-red-600 text-white border-red-700';
+                } else if (s === 'rented' || (s === 'closed' && p === 'rent')) {
+                  label = 'RENTED';
+                  badgeColor = 'bg-blue-600 text-white border-blue-700';
+                } else {
+                  label = 'CLOSED';
+                  badgeColor = 'bg-gray-600 text-white border-gray-700';
+                }
+              } else if (p) {
+                label = p === 'sale' ? 'SALE' : 'RENT';
+                badgeColor = p === 'sale' ? 'bg-red-600 text-white border-red-700' : 'bg-blue-600 text-white border-blue-700';
+              }
+
+              return label ? (
+                <div className="absolute top-3 left-3">
+                  <span className={`px-2 py-1 rounded text-xs font-bold uppercase tracking-wide border ${badgeColor}`}>
+                    {label}
+                  </span>
+                </div>
+              ) : null;
+            })()}
           </div>
         </Link>
 

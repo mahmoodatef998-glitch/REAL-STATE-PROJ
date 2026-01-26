@@ -179,8 +179,8 @@ export default function ProjectDetail({ projectId }) {
                   <div
                     key={index}
                     className={`h-1 rounded-full transition-all duration-300 ${selectedImageIndex === index
-                        ? 'w-8 bg-accent'
-                        : 'w-1 bg-white/40'
+                      ? 'w-8 bg-accent'
+                      : 'w-1 bg-white/40'
                       }`}
                   />
                 ))}
@@ -195,8 +195,8 @@ export default function ProjectDetail({ projectId }) {
                   key={`thumb-${index}-${image}`}
                   onClick={() => handleImageSelect(index)}
                   className={`relative aspect-square rounded overflow-hidden border-2 transition-all duration-300 ${selectedImageIndex === index
-                      ? 'border-accent scale-105'
-                      : 'border-transparent hover:border-white/20'
+                    ? 'border-accent scale-105'
+                    : 'border-transparent hover:border-white/20'
                     }`}
                 >
                   <Image
@@ -237,11 +237,35 @@ export default function ProjectDetail({ projectId }) {
                 🏠 {project.type}
               </span>
             )}
-            {project.purpose && (
-              <span className="px-4 py-2 bg-neutral-800 rounded-full text-sm capitalize">
-                {project.purpose === 'sale' ? '💰 For Sale' : '🏠 For Rent'}
-              </span>
-            )}
+            {(() => {
+              const s = (project.status || 'active').toLowerCase();
+              const p = (project.purpose || '').toLowerCase();
+
+              if (['closed', 'sold', 'rented'].includes(s)) {
+                let label = 'Closed';
+                let style = 'bg-gray-700 text-white';
+
+                if (s === 'sold' || (s === 'closed' && p === 'sale')) {
+                  label = 'SOLD';
+                  style = 'bg-red-600 text-white font-bold px-6';
+                } else if (s === 'rented' || (s === 'closed' && p === 'rent')) {
+                  label = 'RENTED';
+                  style = 'bg-blue-600 text-white font-bold px-6';
+                }
+
+                return (
+                  <span className={`px-4 py-2 rounded-full text-sm uppercase tracking-widest shadow-lg ${style}`}>
+                    {label}
+                  </span>
+                );
+              }
+
+              return (
+                <span className="px-4 py-2 bg-neutral-800 rounded-full text-sm capitalize">
+                  {p === 'sale' ? '💰 For Sale' : '🏠 For Rent'}
+                </span>
+              );
+            })()}
           </div>
 
           {project.price && (
