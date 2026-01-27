@@ -19,7 +19,7 @@ export default function ProjectCard({ project }) {
 
   return (
     <>
-      <div className="group block rounded overflow-hidden bg-neutral-900 border border-white/10 relative">
+      <div className="group block rounded overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 relative shadow-sm hover:shadow-md transition-shadow">
         <Link href={`/properties/${id}`}>
           <div className="relative aspect-[4/3] overflow-hidden">
             <Image
@@ -39,7 +39,7 @@ export default function ProjectCard({ project }) {
                 }
               }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 dark:from-black/40 to-transparent" />
             {(() => {
               const s = (project.status || 'active').toLowerCase();
               const p = (project.purpose || '').toLowerCase();
@@ -76,8 +76,8 @@ export default function ProjectCard({ project }) {
 
         <div className="p-4">
           <Link href={`/properties/${id}`}>
-            <div className="text-xs text-neutral-400">{emirate || 'UAE'}</div>
-            <div className="mt-1 font-semibold text-white">{title}</div>
+            <div className="text-xs text-neutral-500 dark:text-neutral-400">{emirate || 'UAE'}</div>
+            <div className="mt-1 font-semibold text-neutral-900 dark:text-white uppercase tracking-tight">{title}</div>
             {project.owner && project.owner.role === 'broker' && project.owner.name && (
               <div className="mt-1 text-xs text-neutral-500">
                 By: {project.owner.name}
@@ -91,13 +91,13 @@ export default function ProjectCard({ project }) {
           <div className="flex gap-2 mt-3">
             <Link
               href={`/properties/${id}`}
-              className="flex-1 text-center px-3 py-2 text-sm text-accent hover:text-accent/80 border border-accent/30 hover:border-accent/50 rounded-lg transition-colors focus-ring"
+              className="flex-1 text-center px-3 py-2 text-sm text-accent hover:text-white hover:bg-accent border border-accent/30 hover:border-accent rounded-lg transition-all duration-200 focus-ring"
             >
               View Details
             </Link>
             <button
               onClick={handleInterestClick}
-              className="flex-1 px-3 py-2 text-sm bg-accent hover:bg-accent/90 text-white font-medium rounded-lg transition-colors focus-ring"
+              className="flex-1 px-3 py-2 text-sm bg-accent hover:bg-accent/90 text-white font-medium rounded-lg transition-colors focus-ring shadow-sm"
             >
               I&apos;m Interested
             </button>

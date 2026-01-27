@@ -6,6 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLeadNotifications } from '../../hooks/useLeads';
 import LoginModal from '../auth/LoginModal';
 import RegisterModal from '../auth/RegisterModal';
+import ThemeToggle from './ThemeToggle';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -52,16 +53,16 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-neutral-900/95 border-b border-white/10 shadow-lg" suppressHydrationWarning>
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/90 dark:bg-neutral-900/95 border-b border-neutral-200 dark:border-white/10 shadow-lg" suppressHydrationWarning>
         <div className="container-x" suppressHydrationWarning>
           <div className="flex items-center justify-between h-20 gap-8" suppressHydrationWarning>
             {/* Logo */}
-            <Link href="/" className="font-bold tracking-tight text-lg sm:text-xl shrink-0" suppressHydrationWarning>
+            <Link href="/" className="font-bold tracking-tight text-lg sm:text-xl shrink-0 text-neutral-900 dark:text-white" suppressHydrationWarning>
               Alrabie <span className="text-accent underline decoration-accent/30 underline-offset-4">Real Estate</span>
             </Link>
 
             {/* Main Navigation */}
-            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-[15px] font-medium text-neutral-200" suppressHydrationWarning>
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-[15px] font-medium text-neutral-600 dark:text-neutral-200" suppressHydrationWarning>
               {navItems.map((item) => (
                 <Link
                   key={item.href}
@@ -77,8 +78,11 @@ export default function Header() {
               ))}
             </nav>
 
-            {/* Auth Section */}
+            {/* Theme & Auth Section */}
             <div className="flex items-center gap-2 sm:gap-4 shrink-0" suppressHydrationWarning>
+              <div className="hidden sm:block">
+                <ThemeToggle />
+              </div>
               {isAuthenticated ? (
                 <>
                   {/* User Info */}
@@ -159,7 +163,7 @@ export default function Header() {
                   {/* Logout Button */}
                   <button
                     onClick={logout}
-                    className="hidden lg:block px-5 py-2.5 text-neutral-300 hover:text-white hover:bg-neutral-800 rounded-lg transition-all duration-200 text-sm font-medium border border-transparent hover:border-neutral-700"
+                    className="hidden lg:block px-5 py-2.5 text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-all duration-200 text-sm font-medium border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700"
                   >
                     Logout
                   </button>
@@ -168,7 +172,7 @@ export default function Header() {
                 <div className="hidden lg:flex items-center gap-3">
                   <button
                     onClick={handleLoginClick}
-                    className="px-5 py-2.5 text-neutral-200 hover:text-white hover:bg-neutral-800 rounded-lg transition-all duration-200 text-sm font-medium border border-transparent hover:border-neutral-700"
+                    className="px-5 py-2.5 text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-all duration-200 text-sm font-medium border border-transparent hover:border-neutral-200 dark:hover:border-neutral-700"
                   >
                     Login
                   </button>
@@ -183,7 +187,7 @@ export default function Header() {
 
               <button
                 aria-label="Open Menu"
-                className="lg:hidden text-white hover:text-accent transition-all p-2 bg-white/5 rounded-lg active:scale-95 border border-white/10"
+                className="lg:hidden text-neutral-900 dark:text-white hover:text-accent transition-all p-2 bg-neutral-100 dark:bg-white/5 rounded-lg active:scale-95 border border-neutral-200 dark:border-white/10"
                 onClick={() => setOpen(true)}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -204,21 +208,24 @@ export default function Header() {
 
         {/* Mobile Sidebar */}
         <aside
-          className={`lg:hidden fixed top-0 right-0 h-screen w-[280px] bg-neutral-900 border-l border-white/10 shadow-2xl transform transition-transform duration-300 ease-in-out z-[100] ${open ? 'translate-x-0' : 'translate-x-full'}`}
+          className={`lg:hidden fixed top-0 right-0 h-screen w-[280px] bg-white dark:bg-neutral-900 border-l border-neutral-200 dark:border-white/10 shadow-2xl transform transition-transform duration-300 ease-in-out z-[100] ${open ? 'translate-x-0' : 'translate-x-full'}`}
           aria-label="Mobile Menu"
         >
           <div className="flex flex-col h-full">
-            <div className="p-6 flex items-center justify-between border-b border-white/5 bg-neutral-800/20">
-              <span className="font-bold text-sm tracking-widest uppercase text-neutral-400">Navigation</span>
-              <button
-                aria-label="Close Menu"
-                className="p-2 hover:bg-white/5 rounded-lg transition-colors text-white"
-                onClick={() => setOpen(false)}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+            <div className="p-6 flex items-center justify-between border-b border-neutral-100 dark:border-white/5 bg-neutral-50 dark:bg-neutral-800/20">
+              <span className="font-bold text-sm tracking-widest uppercase text-neutral-500 dark:text-neutral-400">Navigation</span>
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <button
+                  aria-label="Close Menu"
+                  className="p-2 hover:bg-neutral-100 dark:hover:bg-white/5 rounded-lg transition-colors text-neutral-900 dark:text-white"
+                  onClick={() => setOpen(false)}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
             <div className="flex-1 overflow-y-auto pt-4">
@@ -228,8 +235,8 @@ export default function Header() {
                     key={item.href}
                     href={item.href}
                     className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 ${pathname === item.href
-                        ? 'bg-accent/10 text-accent font-bold border border-accent/20'
-                        : 'text-neutral-200 hover:bg-white/5 hover:text-white'
+                      ? 'bg-accent/10 text-accent font-bold border border-accent/20'
+                      : 'text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-white'
                       }`}
                     onClick={() => setOpen(false)}
                   >
@@ -239,14 +246,14 @@ export default function Header() {
               </nav>
 
               <div className="px-4 mt-6">
-                <div className="h-px bg-white/5" />
+                <div className="h-px bg-neutral-200 dark:bg-white/5" />
               </div>
 
               {isAuthenticated && (
                 <div className="p-4 space-y-3">
-                  <div className="px-4 py-3 bg-neutral-800/30 rounded-xl border border-white/5">
+                  <div className="px-4 py-3 bg-neutral-100 dark:bg-neutral-800/30 rounded-xl border border-neutral-200 dark:border-white/5">
                     <div className="text-[10px] text-neutral-500 uppercase font-black tracking-widest mb-1">Account</div>
-                    <div className="text-white font-bold text-sm truncate">{user?.name}</div>
+                    <div className="text-neutral-900 dark:text-white font-bold text-sm truncate">{user?.name}</div>
                     <div className="text-accent text-[11px] font-bold uppercase mt-0.5">{user?.role}</div>
                   </div>
 
@@ -255,14 +262,14 @@ export default function Header() {
                       <div className="grid grid-cols-1 gap-1.5">
                         <Link
                           href="/admin/dashboard"
-                          className="flex items-center px-4 py-3 rounded-lg bg-neutral-800/40 text-neutral-200 hover:text-white border border-white/5 text-sm font-medium"
+                          className="flex items-center px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800/40 text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white border border-neutral-200 dark:border-white/5 text-sm font-medium"
                           onClick={() => setOpen(false)}
                         >
                           🏰 Dashboard
                         </Link>
                         <Link
                           href="/admin/leads"
-                          className="flex items-center justify-between px-4 py-3 rounded-lg bg-neutral-800/40 text-neutral-200 hover:text-white border border-white/5 text-sm font-medium"
+                          className="flex items-center justify-between px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800/40 text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white border border-neutral-200 dark:border-white/5 text-sm font-medium"
                           onClick={() => setOpen(false)}
                         >
                           <span className="flex items-center gap-2">📞 Leads</span>
@@ -274,14 +281,14 @@ export default function Header() {
                         </Link>
                         <Link
                           href="/admin/approvals"
-                          className="flex items-center px-4 py-3 rounded-lg bg-neutral-800/40 text-neutral-200 hover:text-white border border-white/5 text-sm font-medium"
+                          className="flex items-center px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800/40 text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white border border-neutral-200 dark:border-white/5 text-sm font-medium"
                           onClick={() => setOpen(false)}
                         >
                           ✅ Approvals
                         </Link>
                         <Link
                           href="/admin/reports"
-                          className="flex items-center px-4 py-3 rounded-lg bg-neutral-800/40 text-neutral-200 hover:text-white border border-white/5 text-sm font-medium"
+                          className="flex items-center px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800/40 text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white border border-neutral-200 dark:border-white/5 text-sm font-medium"
                           onClick={() => setOpen(false)}
                         >
                           📊 Reports
@@ -292,14 +299,14 @@ export default function Header() {
                       <div className="grid grid-cols-1 gap-1.5">
                         <Link
                           href="/broker/dashboard"
-                          className="flex items-center px-4 py-3 rounded-lg bg-neutral-800/40 text-neutral-200 hover:text-white border border-white/5 text-sm font-medium"
+                          className="flex items-center px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800/40 text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white border border-neutral-200 dark:border-white/5 text-sm font-medium"
                           onClick={() => setOpen(false)}
                         >
                           🏠 Dashboard
                         </Link>
                         <Link
                           href="/broker/leads"
-                          className="flex items-center justify-between px-4 py-3 rounded-lg bg-neutral-800/40 text-neutral-200 hover:text-white border border-white/5 text-sm font-medium"
+                          className="flex items-center justify-between px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800/40 text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white border border-neutral-200 dark:border-white/5 text-sm font-medium"
                           onClick={() => setOpen(false)}
                         >
                           <span className="flex items-center gap-2">📞 Leads</span>
@@ -311,7 +318,7 @@ export default function Header() {
                         </Link>
                         <Link
                           href="/broker/add-property"
-                          className="flex items-center px-4 py-3 rounded-lg bg-green-600/20 text-green-400 hover:bg-green-600/30 border border-green-500/20 text-sm font-bold"
+                          className="flex items-center px-4 py-3 rounded-lg bg-green-600/10 dark:bg-green-600/20 text-green-600 dark:text-green-400 hover:bg-green-600/20 dark:hover:bg-green-600/30 border border-green-500/20 text-sm font-bold"
                           onClick={() => setOpen(false)}
                         >
                           ➕ Add Property
@@ -323,14 +330,14 @@ export default function Header() {
               )}
             </div>
 
-            <div className="p-4 border-t border-white/5 bg-neutral-800/20">
+            <div className="p-4 border-t border-neutral-100 dark:border-white/5 bg-neutral-50 dark:bg-neutral-800/20">
               {isAuthenticated ? (
                 <button
                   onClick={() => {
                     logout();
                     setOpen(false);
                   }}
-                  className="w-full flex items-center justify-center px-4 py-3.5 rounded-xl text-red-400 hover:bg-red-500/10 transition-all font-bold text-sm border border-red-500/10"
+                  className="w-full flex items-center justify-center px-4 py-3.5 rounded-xl text-red-500 dark:text-red-400 hover:bg-red-500/10 transition-all font-bold text-sm border border-red-500/20 dark:border-red-500/10"
                 >
                   Sign Out
                 </button>
@@ -341,7 +348,7 @@ export default function Header() {
                       handleLoginClick();
                       setOpen(false);
                     }}
-                    className="flex items-center justify-center px-4 py-3.5 rounded-xl bg-neutral-800 text-white hover:bg-neutral-700 transition-colors font-bold text-sm border border-white/5"
+                    className="flex items-center justify-center px-4 py-3.5 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors font-bold text-sm border border-neutral-200 dark:border-white/5"
                   >
                     Login
                   </button>
@@ -358,11 +365,11 @@ export default function Header() {
               )}
             </div>
           </div>
-        </aside>
-      </header>
+        </aside >
+      </header >
 
       {/* Auth Modals */}
-      <LoginModal
+      < LoginModal
         isOpen={showLoginModal}
         onClose={handleCloseModals}
         onSwitchToRegister={handleSwitchToRegister}

@@ -4,6 +4,7 @@ import { AuthProvider } from '../contexts/AuthContext';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { ThemeProvider } from '../components/providers/ThemeProvider';
 
 export const metadata = {
   title: 'Alrabie Real Estate | Premier Properties in Ajman, UAE',
@@ -22,13 +23,15 @@ export default function RootLayout({ children }) {
         </a>
         <ErrorBoundary>
           <ReactQueryClientProvider>
-            <AuthProvider>
-              <Header />
-              <main id="main">
-                {children}
-              </main>
-              <Footer />
-            </AuthProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <AuthProvider>
+                <Header />
+                <main id="main">
+                  {children}
+                </main>
+                <Footer />
+              </AuthProvider>
+            </ThemeProvider>
           </ReactQueryClientProvider>
         </ErrorBoundary>
       </body>

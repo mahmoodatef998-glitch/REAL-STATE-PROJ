@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 :root {
+  --bg: #ffffff;
+  --fg: #0a0a0a;
+}
+
+.dark {
   --bg: #0a0a0a;
   --fg: #fafafa;
 }
@@ -12,10 +17,11 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--fg);
+  @apply transition-colors duration-300;
 }
 
 .focus-ring {
-  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900;
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-neutral-900 focus-visible:ring-offset-white;
 }
 
 .container-x {
