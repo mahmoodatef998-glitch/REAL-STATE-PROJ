@@ -7,8 +7,8 @@ export default function FeaturedProjects() {
   return (
     <section id="properties" className="container-x py-16">
       <div className="mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold">New Arrivals</h2>
-        <p className="text-neutral-300 mt-2">Discover the latest properties added to our portfolio</p>
+        <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white">New Arrivals</h2>
+        <p className="text-neutral-600 dark:text-neutral-400 mt-2">Discover the latest properties added to our portfolio</p>
       </div>
       {isLoading && (
         <div className="py-12 text-neutral-400">Loading properties…</div>

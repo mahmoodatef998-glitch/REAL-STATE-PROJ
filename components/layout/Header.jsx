@@ -62,7 +62,7 @@ export default function Header() {
             </Link>
 
             {/* Main Navigation */}
-            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-[15px] font-medium text-neutral-600 dark:text-neutral-200" suppressHydrationWarning>
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-[15px] font-medium text-neutral-700 dark:text-neutral-200" suppressHydrationWarning>
               {navItems.map((item) => (
                 <Link
                   key={item.href}

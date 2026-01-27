@@ -123,7 +123,7 @@ export default function NewsSection() {
 
   return (
     <section
-      className="relative h-screen min-h-[600px] max-h-[900px] overflow-hidden bg-black"
+      className="relative h-screen min-h-[600px] max-h-[900px] overflow-hidden bg-black text-white"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       aria-label="Featured Properties Slideshow"
@@ -144,7 +144,8 @@ export default function NewsSection() {
             sizes="100vw"
           />
           {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+          {/* Dark Overlay - consistent for both modes as it's an image overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
         </div>
       ))}
 
@@ -226,8 +227,8 @@ export default function NewsSection() {
             key={index}
             onClick={() => goToSlide(index)}
             className={`transition-all ${index === currentSlide
-                ? 'w-12 bg-accent'
-                : 'w-3 bg-white/50 hover:bg-white/70'
+              ? 'w-12 bg-accent'
+              : 'w-3 bg-white/50 hover:bg-white/70'
               } h-3 rounded-full focus-ring`}
             aria-label={`Go to slide ${index + 1}`}
           />

@@ -74,17 +74,17 @@ export default function GetInTouch() {
     };
 
     return (
-        <section className="py-20 bg-neutral-900 border-t border-white/5">
+        <section className="py-20 bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-200 dark:border-white/5">
             <div className="container-x">
                 <div className="max-w-4xl mx-auto">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
-                        <p className="text-neutral-400 max-w-2xl mx-auto">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-900 dark:text-white">Get In Touch</h2>
+                        <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
                             Have a question or interested in our services? Fill out the form below and our team will get back to you as soon as possible.
                         </p>
                     </div>
 
-                    <div className="bg-neutral-800/40 p-6 md:p-10 rounded-2xl border border-white/5 shadow-xl">
+                    <div className="bg-white dark:bg-neutral-800/40 p-6 md:p-10 rounded-2xl border border-neutral-200 dark:border-white/5 shadow-xl">
                         <form onSubmit={handleSubmit} className="space-y-6">
                             {error && (
                                 <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm animate-fade-in">
@@ -110,7 +110,7 @@ export default function GetInTouch() {
                                         value={formData.firstName}
                                         onChange={handleChange}
                                         required
-                                        className={`w-full px-4 py-3 bg-neutral-900/50 border rounded-xl focus-ring transition-all ${fieldErrors.firstName ? 'border-red-500/50' : 'border-white/5 hover:border-white/20'
+                                        className={`w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-900/50 border rounded-xl focus-ring transition-all ${fieldErrors.firstName ? 'border-red-500/50' : 'border-neutral-200 dark:border-white/5 hover:border-neutral-300 dark:hover:border-white/20'
                                             }`}
                                         placeholder="John"
                                     />

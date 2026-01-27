@@ -105,10 +105,10 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
 
-      <div className="relative bg-neutral-900 rounded-2xl p-6 sm:p-8 w-full max-w-[450px] mx-4 border border-white/10 shadow-2xl animate-scale-in max-h-[90vh] overflow-y-auto">
+      <div className="relative bg-white dark:bg-neutral-900 rounded-2xl p-6 sm:p-8 w-full max-w-[450px] mx-4 border border-neutral-200 dark:border-white/10 shadow-2xl animate-scale-in max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-neutral-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full z-10"
+          className="absolute top-5 right-5 text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors p-2 hover:bg-neutral-100 dark:hover:bg-white/5 rounded-full z-10"
           aria-label="Close modal"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -117,10 +117,10 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }) {
         </button>
 
         <div className="text-center mb-6">
-          <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white to-neutral-400 bg-clip-text text-transparent">
+          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-white">
             Create Account
           </h2>
-          <p className="text-neutral-400 text-sm mt-2">Join us to explore premium real estate opportunities</p>
+          <p className="text-neutral-600 dark:text-neutral-400 text-sm mt-2">Join us to explore premium real estate opportunities</p>
         </div>
 
         {error && (
@@ -144,7 +144,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }) {
                 onChange={handleChange}
                 required
                 autoComplete="name"
-                className={`w-full px-4 py-2.5 bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.name ? 'border-red-500/50' : 'border-white/5 hover:border-white/20'
+                className={`w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.name ? 'border-red-500/50' : 'border-neutral-200 dark:border-white/5 hover:border-neutral-300 dark:hover:border-white/20'
                   }`}
                 placeholder="John Doe"
               />
@@ -165,7 +165,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }) {
                 onChange={handleChange}
                 required
                 autoComplete="email"
-                className={`w-full px-4 py-2.5 bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.email ? 'border-red-500/50' : 'border-white/5 hover:border-white/20'
+                className={`w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.email ? 'border-red-500/50' : 'border-neutral-200 dark:border-white/5 hover:border-neutral-300 dark:hover:border-white/20'
                   }`}
                 placeholder="name@example.com"
               />
@@ -183,7 +183,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }) {
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-neutral-800/50 border border-white/5 hover:border-white/20 rounded-xl focus-ring transition-all appearance-none cursor-pointer"
+                className="w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200 dark:border-white/5 hover:border-neutral-300 dark:hover:border-white/20 rounded-xl focus-ring transition-all appearance-none cursor-pointer text-neutral-900 dark:text-white"
               >
                 <option value="broker">Real Estate Broker</option>
                 <option value="client">Client</option>
@@ -203,7 +203,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }) {
                   onChange={handleChange}
                   required
                   autoComplete="tel"
-                  className={`w-full px-4 py-2.5 bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.phone ? 'border-red-500/50' : 'border-white/5 hover:border-white/20'
+                  className={`w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.phone ? 'border-red-500/50' : 'border-neutral-200 dark:border-white/5 hover:border-neutral-300 dark:hover:border-white/20'
                     }`}
                   placeholder="+971 50 123 4567"
                 />
@@ -226,7 +226,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }) {
                   onChange={handleChange}
                   required
                   autoComplete="new-password"
-                  className={`w-full px-4 py-2.5 bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.password ? 'border-red-500/50' : 'border-white/5 hover:border-white/20'
+                  className={`w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.password ? 'border-red-500/50' : 'border-neutral-200 dark:border-white/5 hover:border-neutral-300 dark:hover:border-white/20'
                     }`}
                   placeholder="••••••••"
                 />
@@ -244,7 +244,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }) {
                   onChange={handleChange}
                   required
                   autoComplete="new-password"
-                  className={`w-full px-4 py-2.5 bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.confirmPassword ? 'border-red-500/50' : 'border-white/5 hover:border-white/20'
+                  className={`w-full px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.confirmPassword ? 'border-red-500/50' : 'border-neutral-200 dark:border-white/5 hover:border-neutral-300 dark:hover:border-white/20'
                     }`}
                   placeholder="••••••••"
                 />

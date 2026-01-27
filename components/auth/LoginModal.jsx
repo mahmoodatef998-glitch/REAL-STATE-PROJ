@@ -63,10 +63,10 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
 
-      <div className="relative bg-neutral-900 rounded-2xl p-6 sm:p-8 w-full max-w-[400px] mx-4 border border-white/10 shadow-2xl animate-scale-in">
+      <div className="relative bg-white dark:bg-neutral-900 rounded-2xl p-6 sm:p-8 w-full max-w-[400px] mx-4 border border-neutral-200 dark:border-white/10 shadow-2xl animate-scale-in">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-neutral-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full"
+          className="absolute top-5 right-5 text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors p-2 hover:bg-neutral-100 dark:hover:bg-white/5 rounded-full"
           aria-label="Close modal"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,10 +75,10 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }) {
         </button>
 
         <div className="text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white to-neutral-400 bg-clip-text text-transparent">
+          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-white">
             Welcome Back
           </h2>
-          <p className="text-neutral-400 text-sm mt-2">Enter your credentials to access your account</p>
+          <p className="text-neutral-600 dark:text-neutral-400 text-sm mt-2">Enter your credentials to access your account</p>
         </div>
 
         {error && (
@@ -90,7 +90,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }) {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
-            <label htmlFor="email" className="block text-sm font-medium text-neutral-300 ml-1">
+            <label htmlFor="email" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 ml-1">
               Email Address
             </label>
             <input
@@ -101,7 +101,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }) {
               onChange={handleChange}
               required
               autoComplete="email"
-              className={`w-full px-4 py-3 bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.email ? 'border-red-500/50' : 'border-white/5 hover:border-white/20'
+              className={`w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.email ? 'border-red-500/50' : 'border-neutral-200 dark:border-white/5 hover:border-neutral-300 dark:hover:border-white/20'
                 }`}
               placeholder="name@example.com"
             />
@@ -111,7 +111,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }) {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="password" className="block text-sm font-medium text-neutral-300 ml-1">
+            <label htmlFor="password" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 ml-1">
               Password
             </label>
             <input
@@ -122,7 +122,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }) {
               onChange={handleChange}
               required
               autoComplete="current-password"
-              className={`w-full px-4 py-3 bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.password ? 'border-red-500/50' : 'border-white/5 hover:border-white/20'
+              className={`w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800/50 border rounded-xl focus-ring transition-all ${fieldErrors.password ? 'border-red-500/50' : 'border-neutral-200 dark:border-white/5 hover:border-neutral-300 dark:hover:border-white/20'
                 }`}
               placeholder="••••••••"
             />
@@ -160,15 +160,15 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }) {
           </p>
         </div>
 
-        <div className="mt-8 p-4 bg-white/5 rounded-2xl border border-white/5">
+        <div className="mt-8 p-4 bg-neutral-50 dark:bg-white/5 rounded-2xl border border-neutral-200 dark:border-white/5">
           <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-tighter mb-3">Demo Access</h3>
           <div className="grid grid-cols-1 gap-2">
-            <div className="flex justify-between items-center p-2 rounded-lg bg-white/5">
-              <span className="text-xs text-neutral-300">Admin</span>
+            <div className="flex justify-between items-center p-2 rounded-lg bg-neutral-100 dark:bg-white/5">
+              <span className="text-xs text-neutral-600 dark:text-neutral-300">Admin</span>
               <code className="text-[10px] text-accent font-medium">admin@test.com</code>
             </div>
-            <div className="flex justify-between items-center p-2 rounded-lg bg-white/5">
-              <span className="text-xs text-neutral-300">Broker</span>
+            <div className="flex justify-between items-center p-2 rounded-lg bg-neutral-100 dark:bg-white/5">
+              <span className="text-xs text-neutral-600 dark:text-neutral-300">Broker</span>
               <code className="text-[10px] text-accent font-medium">broker@test.com</code>
             </div>
           </div>

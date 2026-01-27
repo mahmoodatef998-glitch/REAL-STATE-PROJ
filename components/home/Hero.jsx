@@ -5,19 +5,19 @@ import Image from 'next/image';
 export default function Hero() {
   const prefersReduced = useReducedMotion();
   return (
-    <section className="relative min-h-[80vh] flex items-center">
-      <div className="absolute inset-0 -z-10">
+    <section className="relative min-h-[80vh] flex items-center bg-black">
+      <div className="absolute inset-0 -z-10 bg-black">
         <Image
           src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1920&q=80"
           alt="Hero background"
           fill
           sizes="100vw"
           priority
-          className="object-cover"
+          className="object-cover opacity-80"
         />
-        <div className="absolute inset-0 bg-neutral-950/60" />
+        <div className="absolute inset-0 bg-neutral-950/40" />
       </div>
-      <div className="container-x py-24">
+      <div className="container-x py-24 text-white">
         <motion.h1
           className="max-w-3xl text-5xl md:text-7xl font-bold leading-tight"
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}

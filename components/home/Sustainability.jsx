@@ -14,14 +14,14 @@ export default function Sustainability() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Sustainable Design</h2>
-          <p className="text-neutral-300 text-lg mb-6">
-            We are committed to creating environmentally responsible spaces that minimize impact 
-            while maximizing comfort and functionality. Our sustainable design approach integrates 
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-neutral-900 dark:text-white">Sustainable Design</h2>
+          <p className="text-neutral-600 dark:text-neutral-300 text-lg mb-6">
+            We are committed to creating environmentally responsible spaces that minimize impact
+            while maximizing comfort and functionality. Our sustainable design approach integrates
             energy efficiency, renewable materials, and innovative technologies.
           </p>
-          <p className="text-neutral-300 text-lg mb-8">
-            From green building certifications to smart home systems, we ensure every project 
+          <p className="text-neutral-600 dark:text-neutral-300 text-lg mb-8">
+            From green building certifications to smart home systems, we ensure every project
             contributes to a more sustainable future for our communities.
           </p>
           <Link
@@ -39,21 +39,21 @@ export default function Sustainability() {
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          <div className="bg-neutral-800 p-6 rounded-lg border border-white/10">
+          <div className="bg-white dark:bg-neutral-800 p-6 rounded-lg border border-neutral-200 dark:border-white/10 shadow-sm transition-all hover:shadow-md">
             <div className="text-3xl font-bold text-accent mb-2">50%</div>
-            <div className="text-sm text-neutral-300">Energy Reduction</div>
+            <div className="text-sm text-neutral-600 dark:text-neutral-300">Energy Reduction</div>
           </div>
-          <div className="bg-neutral-800 p-6 rounded-lg border border-white/10">
+          <div className="bg-white dark:bg-neutral-800 p-6 rounded-lg border border-neutral-200 dark:border-white/10 shadow-sm transition-all hover:shadow-md">
             <div className="text-3xl font-bold text-accent mb-2">100%</div>
-            <div className="text-sm text-neutral-300">Renewable Materials</div>
+            <div className="text-sm text-neutral-600 dark:text-neutral-300">Renewable Materials</div>
           </div>
-          <div className="bg-neutral-800 p-6 rounded-lg border border-white/10">
+          <div className="bg-white dark:bg-neutral-800 p-6 rounded-lg border border-neutral-200 dark:border-white/10 shadow-sm transition-all hover:shadow-md">
             <div className="text-3xl font-bold text-accent mb-2">LEED</div>
-            <div className="text-sm text-neutral-300">Certified Projects</div>
+            <div className="text-sm text-neutral-600 dark:text-neutral-300">Certified Projects</div>
           </div>
-          <div className="bg-neutral-800 p-6 rounded-lg border border-white/10">
+          <div className="bg-white dark:bg-neutral-800 p-6 rounded-lg border border-neutral-200 dark:border-white/10 shadow-sm transition-all hover:shadow-md">
             <div className="text-3xl font-bold text-accent mb-2">25+</div>
-            <div className="text-sm text-neutral-300">Years Experience</div>
+            <div className="text-sm text-neutral-600 dark:text-neutral-300">Years Experience</div>
           </div>
         </motion.div>
       </div>
