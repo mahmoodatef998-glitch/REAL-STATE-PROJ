@@ -8,14 +8,14 @@ export default function Hero() {
     <section className="relative min-h-[80vh] flex items-center bg-black">
       <div className="absolute inset-0 -z-10 bg-black">
         <Image
-          src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1920&q=80"
-          alt="Hero background"
+          src="/images/hero-bg.png"
+          alt="Luxury Real Estate UAE"
           fill
           sizes="100vw"
           priority
-          className="object-cover opacity-80"
+          className="object-cover opacity-90"
         />
-        <div className="absolute inset-0 bg-neutral-950/40" />
+        <div className="absolute inset-0 bg-neutral-950/50" />
       </div>
       <div className="container-x py-24 text-white">
         <motion.h1
