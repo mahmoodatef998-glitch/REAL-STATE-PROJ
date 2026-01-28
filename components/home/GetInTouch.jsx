@@ -42,7 +42,7 @@ export default function GetInTouch() {
                         >
                             LET'S TALK.<br />
                             <span className="text-white/20">CONNECT.</span>
-                        </h2 >
+                        </motion.h2>
                         <motion.p
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}

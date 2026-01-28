@@ -1,11 +1,11 @@
 "use client";
 import ProjectCard from './ProjectCard';
-import { useProperties } from '../../hooks/useProperties';
+import { useAllProperties } from '../../hooks/useProperties';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 export default function FeaturedProjects() {
-  const { data: properties, isLoading } = useProperties({ limit: 6, sort: '-createdAt' });
+  const { data: properties, isLoading } = useAllProperties({ limit: 6, sort: '-createdAt' });
 
   return (
     <section id="properties" className="section-padding">
