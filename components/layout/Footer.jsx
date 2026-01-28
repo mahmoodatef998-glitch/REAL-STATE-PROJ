@@ -2,50 +2,57 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="mt-24 border-t border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-neutral-950">
-      <div className="container-x py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-sm text-neutral-600 dark:text-neutral-300">
-        <div>
-          <div className="font-semibold mb-3 text-neutral-900 dark:text-white">Who</div>
-          <ul className="space-y-2">
-            <li><Link className="hover:text-accent transition-colors" href="/about">About</Link></li>
-            <li><Link className="hover:text-accent transition-colors" href="/careers">Careers</Link></li>
-          </ul>
+    <footer className="mt-32 border-t border-white/5 bg-black py-20">
+      <div className="container-x">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20 text-sm">
+          <div className="lg:col-span-1">
+            <Link href="/" className="font-bold tracking-tighter text-xl text-white mb-6 block">
+              Alrabie <span className="text-accent">Real Estate</span>
+            </Link>
+            <p className="text-white/40 leading-relaxed max-w-xs">
+              Designing the future of living in UAE with architectural excellence and sustainable solutions.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            <div className="text-[10px] font-black uppercase tracking-widest text-white/20">Discovery</div>
+            <ul className="space-y-4 font-medium">
+              <li><Link className="text-white/60 hover:text-white transition-colors" href="/properties">Properties</Link></li>
+              <li><Link className="text-white/60 hover:text-white transition-colors" href="/news">News & Insights</Link></li>
+              <li><Link className="text-white/60 hover:text-white transition-colors" href="/about">Our Story</Link></li>
+            </ul>
+          </div>
+
+          <div className="space-y-6">
+            <div className="text-[10px] font-black uppercase tracking-widest text-white/20">Services</div>
+            <ul className="space-y-4 font-medium">
+              <li><Link className="text-white/60 hover:text-white transition-colors" href="/disciplines">Disciplines</Link></li>
+              <li><Link className="text-white/60 hover:text-white transition-colors" href="/broker/add-property">Brokers Portal</Link></li>
+              <li><Link className="text-white/60 hover:text-white transition-colors" href="/contact">Support</Link></li>
+            </ul>
+          </div>
+
+          <div className="space-y-6">
+            <div className="text-[10px] font-black uppercase tracking-widest text-white/20">Legal</div>
+            <ul className="space-y-4 font-medium">
+              <li><Link className="text-white/60 hover:text-white transition-colors" href="/privacy">Privacy Policy</Link></li>
+              <li><Link className="text-white/60 hover:text-white transition-colors" href="/terms">Terms of Service</Link></li>
+              <li><button className="text-white/60 hover:text-white transition-colors">Cookie Settings</button></li>
+            </ul>
+          </div>
         </div>
-        <div>
-          <div className="font-semibold mb-3 text-neutral-900 dark:text-white">What</div>
-          <ul className="space-y-2">
-            <li><Link className="hover:text-accent transition-colors" href="/projects">Projects</Link></li>
-            <li><Link className="hover:text-accent transition-colors" href="/disciplines">Disciplines</Link></li>
-          </ul>
-        </div>
-        <div>
-          <div className="font-semibold mb-3 text-neutral-900 dark:text-white">Impact</div>
-          <ul className="space-y-2">
-            <li><Link className="hover:text-accent transition-colors" href="/sustainability">Sustainability</Link></li>
-            <li><Link className="hover:text-accent transition-colors" href="/news">News</Link></li>
-          </ul>
-        </div>
-        <div>
-          <div className="font-semibold mb-3 text-neutral-900 dark:text-white">Legal</div>
-          <ul className="space-y-2">
-            <li><button className="hover:text-accent transition-colors">Manage Cookies</button></li>
-            <li><Link className="hover:text-accent transition-colors" href="/privacy">Privacy</Link></li>
-            <li><Link className="hover:text-accent transition-colors" href="/terms">Terms</Link></li>
-          </ul>
-        </div>
-      </div>
-      <div className="border-t border-neutral-200 dark:border-white/10">
-        <div className="container-x py-6 text-xs text-neutral-500 flex items-center justify-between">
-          <div>© {new Date().getFullYear()} Alrabie Real Estate</div>
-          <div className="flex items-center gap-4">
-            <a href="#" aria-label="Twitter" className="hover:text-accent transition-colors">Twitter</a>
-            <a href="#" aria-label="LinkedIn" className="hover:text-accent transition-colors">LinkedIn</a>
-            <a href="#" aria-label="Instagram" className="hover:text-accent transition-colors">Instagram</a>
+
+        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-[10px] font-black uppercase tracking-widest text-white/20">
+            © {new Date().getFullYear()} Alrabie Real Estate. All rights reserved.
+          </div>
+          <div className="flex items-center gap-8 text-[10px] font-black uppercase tracking-widest">
+            <a href="#" className="text-white/40 hover:text-white transition-colors">Twitter</a>
+            <a href="#" className="text-white/40 hover:text-white transition-colors">LinkedIn</a>
+            <a href="#" className="text-white/40 hover:text-white transition-colors">Instagram</a>
           </div>
         </div>
       </div>
     </footer>
   );
 }
-
-

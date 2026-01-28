@@ -1,51 +1,72 @@
 "use client";
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useDisciplines } from '../../hooks/useDisciplines';
+
+const disciplines = [
+  { name: 'Architecture', icon: '🏛️', description: 'Innovative architectural design that pushes boundaries while honoring local heritage.' },
+  { name: 'Interior Design', icon: '🛋️', description: 'Curating spaces that balance luxury, comfort, and functional excellence.' },
+  { name: 'Landscape', icon: '🌳', description: 'Sustainable outdoor environments that seamlessly integrate with modern architecture.' },
+  { name: 'Sustainability', icon: '🌱', description: 'Committed to green engineering and environmentally responsible real estate solutions.' }
+];
 
 export default function Disciplines() {
-  const { data = [] } = useDisciplines();
-  const prefersReduced = useReducedMotion();
-
   return (
-    <section className="container-x py-16">
-      <motion.div
-        className="text-center mb-12"
-        initial={prefersReduced ? false : { opacity: 0, y: 20 }}
-        whileInView={prefersReduced ? {} : { opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-      >
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-900 dark:text-white">Our Disciplines</h2>
-        <p className="text-neutral-600 dark:text-neutral-300 text-lg max-w-2xl mx-auto">
-          Comprehensive expertise across multiple design disciplines to deliver exceptional spaces
-        </p>
-      </motion.div>
+    <section className="section-padding relative overflow-hidden">
+      <div className="absolute inset-x-0 bottom-0 h-96 glow-mesh -z-10 opacity-30 rotate-180" />
 
-      <motion.div
-        className="flex flex-wrap justify-center gap-4"
-        initial={prefersReduced ? false : { opacity: 0 }}
-        whileInView={prefersReduced ? {} : { opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        viewport={{ once: true }}
-      >
-        {data.map((discipline, index) => (
-          <motion.div
-            key={discipline}
-            initial={prefersReduced ? false : { opacity: 0, y: 20 }}
-            whileInView={prefersReduced ? {} : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
+      <div className="container-x">
+        <div className="max-w-3xl mb-24">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="text-4xl md:text-6xl font-black tracking-tighter text-gradient mb-8"
           >
-            <Link
-              href="/disciplines"
-              className="inline-block px-6 py-3 bg-white dark:bg-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-700 border border-neutral-200 dark:border-white/10 hover:border-neutral-300 dark:hover:border-white/20 rounded-full text-sm font-medium text-neutral-700 dark:text-neutral-200 transition-all duration-300 focus-ring shadow-sm hover:shadow-md"
+            OUR EXPERTISE.
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-white/40 text-lg font-medium leading-relaxed"
+          >
+            Comprehensive design and management services tailored for the elite real estate market. We bridge the gap between vision and reality.
+          </motion.p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {disciplines.map((item, idx) => (
+            <motion.div
+              key={item.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="bento-card group flex flex-col justify-between"
             >
-              {discipline}
-            </Link>
-          </motion.div>
-        ))}
-      </motion.div>
+              <div>
+                <span className="text-4xl mb-8 block grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-110">
+                  {item.icon}
+                </span>
+                <h3 className="text-xl font-bold text-white mb-4 tracking-tight">
+                  {item.name}
+                </h3>
+                <p className="text-white/40 text-sm leading-relaxed mb-8">
+                  {item.description}
+                </p>
+              </div>
+
+              <Link
+                href="/disciplines"
+                className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/50 group-hover:text-accent transition-colors"
+              >
+                Learn More <span>→</span>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

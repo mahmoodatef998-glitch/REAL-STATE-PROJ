@@ -1,118 +1,76 @@
 "use client";
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { shouldUnoptimizeImage } from '../../lib/utils/imageHelpers';
 import LeadInterestModal from '../properties/LeadInterestModal';
+import { useState } from 'react';
 
 export default function ProjectCard({ project }) {
   const { id, title, images = [], emirate, purpose: rawPurpose } = project;
   const purpose = (rawPurpose || '').toLowerCase();
-  const img = images[0] || 'https://picsum.photos/800/600?grayscale';
+  const img = images[0] || 'https://picsum.photos/800/600';
   const [showInterestModal, setShowInterestModal] = useState(false);
-
-  const handleInterestClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setShowInterestModal(true);
-  };
 
   return (
     <>
-      <div className="group block rounded overflow-hidden bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 relative shadow-sm hover:shadow-md transition-shadow">
-        <Link href={`/properties/${id}`}>
-          <div className="relative aspect-[4/3] overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="group relative"
+      >
+        <Link href={`/properties/${id}`} className="block">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-neutral-900 border border-white/5">
             <Image
               src={img}
               alt={title}
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-              loading="lazy"
+              className="object-cover transition-transform duration-700 ease-[0.22, 1, 0.36, 1] group-hover:scale-110"
               unoptimized={shouldUnoptimizeImage(img)}
-              onError={(e) => {
-                // Prevent infinite loop if fallback also fails
-                const fallbackUrl = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80';
-                if (e.target.src && !e.target.src.includes(fallbackUrl.split('?')[0])) {
-                  e.target.onerror = null;
-                  e.target.src = fallbackUrl;
-                }
-              }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 dark:from-black/40 to-transparent" />
-            {(() => {
-              const s = (project.status || 'active').toLowerCase();
-              const p = (project.purpose || '').toLowerCase();
+            {/* Overlay Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
 
-              let label = '';
-              let badgeColor = '';
-
-              if (['closed', 'sold', 'rented'].includes(s)) {
-                if (s === 'sold' || (s === 'closed' && p === 'sale')) {
-                  label = 'SOLD';
-                  badgeColor = 'bg-red-600 text-white border-red-700';
-                } else if (s === 'rented' || (s === 'closed' && p === 'rent')) {
-                  label = 'RENTED';
-                  badgeColor = 'bg-blue-600 text-white border-blue-700';
-                } else {
-                  label = 'CLOSED';
-                  badgeColor = 'bg-gray-600 text-white border-gray-700';
-                }
-              } else if (p) {
-                label = p === 'sale' ? 'SALE' : 'RENT';
-                badgeColor = p === 'sale' ? 'bg-red-600 text-white border-red-700' : 'bg-blue-600 text-white border-blue-700';
-              }
-
-              return label ? (
-                <div className="absolute top-3 left-3">
-                  <span className={`px-2 py-1 rounded text-xs font-bold uppercase tracking-wide border ${badgeColor}`}>
-                    {label}
-                  </span>
-                </div>
-              ) : null;
-            })()}
+            {/* Info on Image */}
+            <div className="absolute inset-x-0 bottom-0 p-8">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest text-white border border-white/10">
+                  {emirate}
+                </span>
+                <span className={`px-3 py-1 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest border ${purpose === 'sale' ? 'bg-accent/20 text-accent border-accent/20' : 'bg-green-500/20 text-green-400 border-green-500/20'
+                  }`}>
+                  For {purpose}
+                </span>
+              </div>
+              <h3 className="text-2xl font-bold tracking-tight text-white group-hover:text-accent transition-colors duration-300">
+                {title}
+              </h3>
+            </div>
           </div>
         </Link>
 
-        <div className="p-4">
-          <Link href={`/properties/${id}`}>
-            <div className="text-xs text-neutral-500 dark:text-neutral-400">{emirate || 'UAE'}</div>
-            <div className="mt-1 font-semibold text-neutral-900 dark:text-white uppercase tracking-tight">{title}</div>
-            {project.owner && project.owner.role === 'broker' && project.owner.name && (
-              <div className="mt-1 text-xs text-neutral-500">
-                By: {project.owner.name}
-                {project.owner.phone && (
-                  <span className="ml-2 text-neutral-400">• {project.owner.phone}</span>
-                )}
-              </div>
-            )}
-          </Link>
+        {/* Hover Action Button */}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setShowInterestModal(true);
+          }}
+          className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full glass-effect text-white opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-accent hover:border-accent"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+      </motion.div>
 
-          <div className="flex gap-2 mt-3">
-            <Link
-              href={`/properties/${id}`}
-              className="flex-1 text-center px-3 py-2 text-sm text-accent hover:text-white hover:bg-accent border border-accent/30 hover:border-accent rounded-lg transition-all duration-200 focus-ring"
-            >
-              View Details
-            </Link>
-            <button
-              onClick={handleInterestClick}
-              className="flex-1 px-3 py-2 text-sm bg-accent hover:bg-accent/90 text-white font-medium rounded-lg transition-colors focus-ring shadow-sm"
-            >
-              I&apos;m Interested
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Lead Interest Modal */}
       <LeadInterestModal
         isOpen={showInterestModal}
         onClose={() => setShowInterestModal(false)}
-        property={project}
+        propertyId={id}
+        propertyTitle={title}
       />
     </>
   );
 }
-
-

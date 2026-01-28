@@ -3,24 +3,69 @@
 @tailwind utilities;
 
 :root {
-  --bg: #0a0a0a;
-  --fg: #fafafa;
+  --bg: #050505;
+  --fg: #ffffff;
+  --accent: #0066cc;
+  --accent-glow: rgba(0, 102, 204, 0.15);
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(5, 5, 5, 0.8);
 }
 
 html {
   scroll-behavior: smooth;
+  background-color: var(--bg);
 }
 
 body {
   background-color: var(--bg);
   color: var(--fg);
-  @apply transition-colors duration-300 min-h-screen;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  @apply antialiased selection:bg-accent selection:text-white;
+}
+
+/* Offground Style Utilities */
+.glass-effect {
+  @apply backdrop-blur-xl border border-white/10 bg-black/40;
+}
+
+.bento-card {
+  @apply bg-neutral-900/40 border border-white/5 rounded-3xl p-8 hover:border-white/20 transition-all duration-500 hover:bg-neutral-900/60;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60;
+}
+
+.section-padding {
+  @apply py-24 md:py-32;
+}
+
+.glow-mesh {
+  background: radial-gradient(circle at 50% -20%, var(--accent-glow), transparent 70%);
 }
 
 .focus-ring {
-  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-neutral-900 focus-visible:ring-offset-white;
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-4 focus-visible:ring-offset-black;
 }
 
 .container-x {
-  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  @apply max-w-7xl mx-auto px-6 sm:px-10 lg:px-12;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #333;
 }
