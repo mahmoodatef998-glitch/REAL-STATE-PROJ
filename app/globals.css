@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --bg: #ffffff;
+  --bg: rgba(255, 255, 255, 0);
   --fg: #0a0a0a;
 }
 
@@ -12,12 +12,17 @@
   --fg: #fafafa;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: radial-gradient(circle at top right, rgba(234, 179, 8, 0.05), transparent),
+    radial-gradient(circle at bottom left, rgba(234, 179, 8, 0.05), transparent);
+  background-attachment: fixed;
   color: var(--fg);
-  @apply transition-colors duration-300;
+  @apply transition-colors duration-300 min-h-screen;
 }
 
 .focus-ring {
@@ -27,4 +32,3 @@ body {
 .container-x {
   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }
-
