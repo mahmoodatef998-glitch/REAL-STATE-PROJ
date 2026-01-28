@@ -3,11 +3,6 @@
 @tailwind utilities;
 
 :root {
-  --bg: #d1d5db;
-  --fg: #0a0a0a;
-}
-
-.dark {
   --bg: #0a0a0a;
   --fg: #fafafa;
 }

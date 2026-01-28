@@ -6,7 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLeadNotifications } from '../../hooks/useLeads';
 import LoginModal from '../auth/LoginModal';
 import RegisterModal from '../auth/RegisterModal';
-import ThemeToggle from './ThemeToggle';
+
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -80,9 +80,6 @@ export default function Header() {
 
             {/* Theme & Auth Section */}
             <div className="flex items-center gap-2 sm:gap-4 shrink-0" suppressHydrationWarning>
-              <div className="hidden sm:block">
-                <ThemeToggle />
-              </div>
               {isAuthenticated ? (
                 <>
                   {/* User Info */}
@@ -215,7 +212,6 @@ export default function Header() {
             <div className="p-6 flex items-center justify-between border-b border-neutral-100 dark:border-white/5 bg-neutral-50 dark:bg-neutral-800/20">
               <span className="font-bold text-sm tracking-widest uppercase text-neutral-500 dark:text-neutral-400">Navigation</span>
               <div className="flex items-center gap-2">
-                <ThemeToggle />
                 <button
                   aria-label="Close Menu"
                   className="p-2 hover:bg-neutral-100 dark:hover:bg-white/5 rounded-lg transition-colors text-neutral-900 dark:text-white"

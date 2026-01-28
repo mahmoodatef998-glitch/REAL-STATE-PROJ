@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
         </a>
         <ErrorBoundary>
           <ReactQueryClientProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} forcedTheme="dark">
               <AuthProvider>
                 <Header />
                 <main id="main">
