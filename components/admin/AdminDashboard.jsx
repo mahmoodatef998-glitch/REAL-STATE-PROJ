@@ -10,6 +10,7 @@ import PropertyCard from './PropertyCard';
 import PropertyForm from './PropertyForm';
 import DealForm from './DealForm';
 import DealsTable from './DealsTable';
+import UserManagement from './UserManagement';
 
 export default function AdminDashboard() {
   const { isAdmin } = useAuth();
@@ -22,7 +23,7 @@ export default function AdminDashboard() {
   const [editingProperty, setEditingProperty] = useState(null);
   const [filter, setFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [activeTab, setActiveTab] = useState('active'); // 'active', 'closed', or 'deals'
+  const [activeTab, setActiveTab] = useState('active'); // 'active', 'closed', 'deals', or 'users'
   const [showDealForm, setShowDealForm] = useState(false);
   const [editingDeal, setEditingDeal] = useState(null);
 
@@ -213,6 +214,15 @@ export default function AdminDashboard() {
                   {deals.length}
                 </span>
               )}
+            </button>
+            <button
+              onClick={() => setActiveTab('users')}
+              className={`px-4 sm:px-6 py-2 sm:py-3 font-semibold transition-colors focus-ring border-b-2 text-sm sm:text-base ${activeTab === 'users'
+                ? 'text-accent border-accent'
+                : 'text-neutral-400 border-transparent hover:text-white'
+                }`}
+            >
+              User Management
             </button>
           </div>
         </div>
@@ -405,7 +415,7 @@ export default function AdminDashboard() {
               </div>
             )}
           </div>
-        ) : (
+        ) : activeTab === 'deals' ? (
           /* Deals Section */
           <div className="space-y-6">
             <h2 className="text-2xl font-semibold text-white">All Deals</h2>
@@ -417,7 +427,10 @@ export default function AdminDashboard() {
               isLoading={dealsLoading}
             />
           </div>
-        )}
+        ) : activeTab === 'users' ? (
+          /* User Management Section */
+          <UserManagement />
+        ) : null}
 
         {/* Property Form Modal */}
         {showForm && (
@@ -437,7 +450,7 @@ export default function AdminDashboard() {
           />
         )}
       </div>
-    </div>
+    </div >
   );
 }
 
