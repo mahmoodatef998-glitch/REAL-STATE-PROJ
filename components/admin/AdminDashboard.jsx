@@ -135,7 +135,7 @@ export default function AdminDashboard() {
   };
 
   const deals = dealsData?.deals || [];
-  const dealsTotals = dealsData?.totals || null;
+  const dealsTotals = dealsData?.totals || {};
 
   if (isLoading && activeTab === 'properties') {
     return (

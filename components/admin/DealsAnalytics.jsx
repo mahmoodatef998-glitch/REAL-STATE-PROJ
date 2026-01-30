@@ -30,9 +30,9 @@ export default function DealsAnalytics({ deals = [], totals = {} }) {
     // 2. Process data for Deal Status Pie Chart
     const statusData = useMemo(() => {
         return [
-            { name: 'Opened', value: totals.byStatus?.open || 0, color: '#fbbf24' },
-            { name: 'Closed', value: totals.byStatus?.closed || 0, color: '#10b981' },
-            { name: 'Cancelled', value: totals.byStatus?.cancelled || 0, color: '#ef4444' },
+            { name: 'Opened', value: totals?.byStatus?.open || 0, color: '#fbbf24' },
+            { name: 'Closed', value: totals?.byStatus?.closed || 0, color: '#10b981' },
+            { name: 'Cancelled', value: totals?.byStatus?.cancelled || 0, color: '#ef4444' },
         ].filter(d => d.value > 0);
     }, [totals]);
 
@@ -179,7 +179,7 @@ export default function DealsAnalytics({ deals = [], totals = {} }) {
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                             <span className="text-white/20 text-[10px] font-black uppercase tracking-widest">Efficiency</span>
                             <span className="text-3xl font-black text-white tracking-tighter">
-                                {totals.totalDeals > 0 ? Math.round((totals.byStatus?.closed / totals.totalDeals) * 100) : 0}%
+                                {totals?.totalDeals > 0 ? Math.round((totals?.byStatus?.closed / totals?.totalDeals) * 100) : 0}%
                             </span>
                             <span className="text-green-400 text-[10px] font-black uppercase tracking-widest">Success</span>
                         </div>
