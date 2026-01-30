@@ -3,18 +3,11 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { useLeadNotifications } from '../../hooks/useLeads';
 import LoginModal from '../auth/LoginModal';
 import RegisterModal from '../auth/RegisterModal';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/properties', label: 'Properties' },
-  { href: '/news', label: 'News' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' }
-];
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,7 +15,16 @@ export default function Header() {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const pathname = usePathname();
   const { user, isAuthenticated, logout, isAdmin, isBroker } = useAuth();
+  const { lang, toggleLanguage, t } = useLanguage();
   const { data: notificationCount = 0 } = useLeadNotifications(isAuthenticated && (isBroker || isAdmin));
+
+  const navItems = [
+    { href: '/', label: t('nav.home') },
+    { href: '/properties', label: t('nav.properties') },
+    { href: '/news', label: t('nav.news') },
+    { href: '/about', label: t('nav.about') },
+    { href: '/contact', label: t('nav.contact') }
+  ];
 
   return (
     <>
@@ -54,30 +56,42 @@ export default function Header() {
                   href={isAdmin() ? "/admin/dashboard" : "/broker/dashboard"}
                   className="px-4 py-2 bg-accent/10 hover:bg-accent/20 border border-accent/20 rounded-xl text-xs font-bold text-accent transition-all"
                 >
-                  Dashboard
+                  {t('nav.dashboard')}
                 </Link>
               )}
+              <button
+                onClick={toggleLanguage}
+                className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-[10px] font-black hover:bg-white/10 transition-all uppercase"
+              >
+                {lang === 'en' ? 'AR' : 'EN'}
+              </button>
               <span className="text-white/60 text-xs font-medium uppercase tracking-widest">{user?.name}</span>
               <button
                 onClick={logout}
                 className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-bold transition-all"
               >
-                Logout
+                {t('nav.logout')}
               </button>
             </div>
           ) : (
             <div className="hidden lg:flex items-center gap-4">
               <button
+                onClick={toggleLanguage}
+                className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-[10px] font-black hover:bg-white/10 transition-all uppercase mr-2"
+              >
+                {lang === 'en' ? 'AR' : 'EN'}
+              </button>
+              <button
                 onClick={() => setShowLoginModal(true)}
                 className="text-white/70 hover:text-white text-xs font-bold transition-all"
               >
-                Login
+                {t('nav.login')}
               </button>
               <button
                 onClick={() => setShowRegisterModal(true)}
                 className="px-5 py-2.5 bg-accent hover:bg-accent/80 text-white text-xs font-bold rounded-xl transition-all shadow-lg shadow-accent/20"
               >
-                Join Now
+                {t('nav.join')}
               </button>
             </div>
           )}
@@ -120,6 +134,17 @@ export default function Header() {
               ))}
             </nav>
             <div className="h-px bg-white/10 w-full" />
+
+            <div className="flex justify-between items-center px-2">
+              <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">Language</span>
+              <button
+                onClick={() => { toggleLanguage(); setIsMenuOpen(false); }}
+                className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-xs font-black uppercase"
+              >
+                {lang === 'en' ? 'Arabic' : 'English'}
+              </button>
+            </div>
+
             <div className="flex flex-col gap-3">
               {isAuthenticated ? (
                 <>
@@ -129,14 +154,14 @@ export default function Header() {
                       onClick={() => setIsMenuOpen(false)}
                       className="w-full py-4 bg-accent text-white rounded-2xl font-bold text-center"
                     >
-                      Dashboard
+                      {t('nav.dashboard')}
                     </Link>
                   )}
                   <button
                     onClick={() => { logout(); setIsMenuOpen(false); }}
                     className="w-full py-4 bg-red-500/10 text-red-500 border border-red-500/20 rounded-2xl font-bold"
                   >
-                    Sign Out
+                    {t('nav.logout')}
                   </button>
                 </>
               ) : (
@@ -145,13 +170,13 @@ export default function Header() {
                     onClick={() => { setShowLoginModal(true); setIsMenuOpen(false); }}
                     className="py-4 bg-white/5 border border-white/10 rounded-2xl text-sm font-bold"
                   >
-                    Login
+                    {t('nav.login')}
                   </button>
                   <button
                     onClick={() => { setShowRegisterModal(true); setIsMenuOpen(false); }}
                     className="py-4 bg-accent text-white rounded-2xl text-sm font-bold"
                   >
-                    Join
+                    {t('nav.join')}
                   </button>
                 </div>
               )}

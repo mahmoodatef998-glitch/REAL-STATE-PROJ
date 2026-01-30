@@ -5,15 +5,18 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAllProperties } from '../../hooks/useProperties';
 import { useDeals, useDeleteDeal } from '../../hooks/useDeals';
 import { useAuth } from '../../contexts/AuthContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { api } from '../../lib/api/axios-client';
 import PropertyCard from './PropertyCard';
 import PropertyForm from './PropertyForm';
 import DealForm from './DealForm';
 import DealsTable from './DealsTable';
 import UserManagement from './UserManagement';
+import DealsAnalytics from './DealsAnalytics';
 
 export default function AdminDashboard() {
   const { isAdmin } = useAuth();
+  const { t } = useLanguage();
   const queryClient = useQueryClient();
   const { data: properties = [], isLoading, refetch } = useAllProperties({ showAll: true });
   const { data: dealsData, isLoading: dealsLoading, refetch: refetchDeals } = useDeals();
@@ -23,7 +26,7 @@ export default function AdminDashboard() {
   const [editingProperty, setEditingProperty] = useState(null);
   const [filter, setFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [activeTab, setActiveTab] = useState('active'); // 'active', 'closed', 'deals', or 'users'
+  const [activeTab, setActiveTab] = useState('analytics'); // Default to analytics for 'wow' factor
   const [showDealForm, setShowDealForm] = useState(false);
   const [editingDeal, setEditingDeal] = useState(null);
 
@@ -156,9 +159,9 @@ export default function AdminDashboard() {
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="h-px w-8 bg-accent" />
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">Management Portal</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">{t('admin.portal')}</span>
           </div>
-          <h1 className="text-5xl font-bold text-white tracking-tighter mb-3">Admin <span className="text-white/20">Dashboard</span></h1>
+          <h1 className="text-5xl font-bold text-white tracking-tighter mb-3">Admin <span className="text-white/20">{t('admin.dashboard')}</span></h1>
           <p className="text-neutral-400 max-w-xl text-lg font-medium leading-relaxed">
             Execute strategic operations, manage premium inventory, and oversee financial performance through the Alrabie internal system.
           </p>
@@ -177,7 +180,7 @@ export default function AdminDashboard() {
                 : 'text-neutral-400 border-transparent hover:text-white'
                 }`}
             >
-              Active Properties
+              {t('admin.properties')}
               {stats.active > 0 && (
                 <span className="ml-2 px-2 py-0.5 text-xs bg-green-500/20 text-green-300 rounded">
                   {stats.active}
@@ -194,7 +197,7 @@ export default function AdminDashboard() {
                 : 'text-neutral-400 border-transparent hover:text-white'
                 }`}
             >
-              Closed Properties
+              {t('admin.closed')}
               {stats.closed + stats.sold > 0 && (
                 <span className="ml-2 px-2 py-0.5 text-xs bg-gray-500/20 text-gray-300 rounded">
                   {stats.closed + stats.sold}
@@ -208,7 +211,7 @@ export default function AdminDashboard() {
                 : 'text-neutral-400 border-transparent hover:text-white'
                 }`}
             >
-              Deals & Commissions
+              {t('admin.deals')}
               {deals.length > 0 && (
                 <span className="ml-2 px-2 py-0.5 text-xs bg-accent/20 rounded">
                   {deals.length}
@@ -222,7 +225,16 @@ export default function AdminDashboard() {
                 : 'text-neutral-400 border-transparent hover:text-white'
                 }`}
             >
-              User Management
+              {t('admin.users')}
+            </button>
+            <button
+              onClick={() => setActiveTab('analytics')}
+              className={`px-4 sm:px-6 py-2 sm:py-3 font-semibold transition-colors focus-ring border-b-2 text-sm sm:text-base ${activeTab === 'analytics'
+                ? 'text-accent border-accent'
+                : 'text-neutral-400 border-transparent hover:text-white'
+                }`}
+            >
+              {t('admin.analytics')}
             </button>
           </div>
         </div>
@@ -430,6 +442,9 @@ export default function AdminDashboard() {
         ) : activeTab === 'users' ? (
           /* User Management Section */
           <UserManagement />
+        ) : activeTab === 'analytics' ? (
+          /* Analytics Section */
+          <DealsAnalytics deals={deals} totals={dealsTotals} />
         ) : null}
 
         {/* Property Form Modal */}

@@ -1,52 +1,122 @@
 "use client";
-import { createContext, useContext, useState, useEffect } from 'react';
-import { translations } from '../lib/i18n/translations';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const LanguageContext = createContext();
 
+const translations = {
+  en: {
+    nav: {
+      home: 'Home',
+      properties: 'Properties',
+      news: 'News',
+      about: 'About',
+      contact: 'Contact',
+      dashboard: 'Dashboard',
+      logout: 'Logout',
+      join: 'Join Now',
+      login: 'Login'
+    },
+    hero: {
+      tag: 'Experience Excellence',
+      title: 'FUTURE',
+      titleLine2: 'OF LIVING.',
+      subtitle: 'Redefining luxury through architectural precision and minimalist design. Exclusive properties in Ajman and across the Emirates.',
+      cta: 'EXPLORE PROPERTIES',
+      secondaryCta: 'OUR STORY',
+      scroll: 'SCROLL'
+    },
+    admin: {
+      portal: 'Management Portal',
+      dashboard: 'Dashboard',
+      analytics: 'Analytics',
+      users: 'User Management',
+      properties: 'Active Properties',
+      closed: 'Closed Properties',
+      deals: 'Deals & Commissions'
+    }
+  },
+  ar: {
+    nav: {
+      home: 'الرئيسية',
+      properties: 'العقارات',
+      news: 'الأخبار',
+      about: 'من نحن',
+      contact: 'اتصل بنا',
+      dashboard: 'لوحة التحكم',
+      logout: 'خروج',
+      join: 'انضم الآن',
+      login: 'دخول'
+    },
+    hero: {
+      tag: 'جرب التميز',
+      title: 'مستقبل',
+      titleLine2: 'الحياة.',
+      subtitle: 'إعادة تعريف الرفاهية من خلال الدقة المعمارية والتصميم البسيط. عقارات حصرية في عجمان وجميع أنحاء الإمارات.',
+      cta: 'استكشف العقارات',
+      secondaryCta: 'قصتنا',
+      scroll: 'اسحب للأسفل'
+    },
+    admin: {
+      portal: 'بوابة الإدارة',
+      dashboard: 'لوحة التحكم',
+      analytics: 'التحليلات',
+      users: 'إدارة الفريق',
+      properties: 'العقارات النشطة',
+      closed: 'العقارات المباعة',
+      deals: 'الصفقات والعمولات'
+    }
+  }
+};
+
 export function LanguageProvider({ children }) {
-  const [language, setLanguage] = useState('en');
+  const [lang, setLang] = useState('en');
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Load language from localStorage
-    const savedLang = localStorage.getItem('language');
-    if (savedLang && (savedLang === 'en' || savedLang === 'ar')) {
-      setLanguage(savedLang);
-      document.documentElement.lang = savedLang;
-      document.documentElement.dir = savedLang === 'ar' ? 'rtl' : 'ltr';
-    }
+    const saved = localStorage.getItem('lang') || 'en';
+    setLang(saved);
+    updateDirection(saved);
+    setIsReady(true);
   }, []);
 
-  const changeLanguage = (lang) => {
-    setLanguage(lang);
-    localStorage.setItem('language', lang);
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const updateDirection = (language) => {
+    const dir = language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.dir = dir;
+    document.documentElement.lang = language;
+    if (language === 'ar') {
+      document.body.classList.add('font-arabic');
+    } else {
+      document.body.classList.remove('font-arabic');
+    }
   };
 
-  const t = (key) => {
-    return translations[language][key] || key;
+  const toggleLanguage = () => {
+    const newLang = lang === 'en' ? 'ar' : 'en';
+    setLang(newLang);
+    localStorage.setItem('lang', newLang);
+    updateDirection(newLang);
   };
 
-  const value = {
-    language,
-    changeLanguage,
-    t,
-    isRTL: language === 'ar'
+  const t = (path) => {
+    const keys = path.split('.');
+    let result = translations[lang];
+    for (const key of keys) {
+      if (result && result[key]) {
+        result = result[key];
+      } else {
+        return path;
+      }
+    }
+    return result;
   };
+
+  if (!isReady) return null;
 
   return (
-    <LanguageContext.Provider value={value}>
+    <LanguageContext.Provider value={{ lang, toggleLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
 }
 
-export function useLanguage() {
-  const context = useContext(LanguageContext);
-  if (!context) {
-    throw new Error('useLanguage must be used within LanguageProvider');
-  }
-  return context;
-}
-
+export const useLanguage = () => useContext(LanguageContext);

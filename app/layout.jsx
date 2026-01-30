@@ -1,6 +1,7 @@
 import './globals.css';
 import { ReactQueryClientProvider } from '../components/providers/ReactQueryClientProvider';
 import { AuthProvider } from '../contexts/AuthContext';
+import { LanguageProvider } from '../contexts/LanguageContext';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import ErrorBoundary from '../components/ErrorBoundary';
@@ -26,13 +27,15 @@ export default function RootLayout({ children }) {
           <ReactQueryClientProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} forcedTheme="dark">
               <SmoothScroll>
-                <AuthProvider>
-                  <Header />
-                  <main id="main">
-                    {children}
-                  </main>
-                  <Footer />
-                </AuthProvider>
+                <LanguageProvider>
+                  <AuthProvider>
+                    <Header />
+                    <main id="main">
+                      {children}
+                    </main>
+                    <Footer />
+                  </AuthProvider>
+                </LanguageProvider>
               </SmoothScroll>
             </ThemeProvider>
           </ReactQueryClientProvider>

@@ -17,11 +17,21 @@ html {
   background-color: var(--bg);
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap');
+
 body {
   background-color: var(--bg);
   color: var(--fg);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   @apply antialiased selection:bg-accent selection:text-white;
+}
+
+.font-arabic {
+  font-family: 'Tajawal', sans-serif !important;
+}
+
+html[dir="rtl"] {
+  letter-spacing: 0 !important;
 }
 
 /* Offground Style Utilities */
