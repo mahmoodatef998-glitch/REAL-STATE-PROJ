@@ -1,142 +1,124 @@
 "use client";
 import Link from 'next/link';
+import { motion } from 'framer-motion';
+
+const values = [
+  { icon: '🎯', title: 'Excellence', description: 'We strive for excellence in every property transaction and client interaction.' },
+  { icon: '🤝', title: 'Trust', description: 'Building lasting relationships through transparency and integrity.' },
+  { icon: '💡', title: 'Innovation', description: 'Leveraging technology to provide seamless real estate experiences.' },
+  { icon: '🌟', title: 'Quality', description: 'Curating the finest properties across the UAE market.' }
+];
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-neutral-900 py-20">
-      <div className="container-x">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-white mb-4">
-            About <span className="text-accent">AL RABEI</span> Real Estate
+    <div className="min-h-screen bg-black pt-32 pb-20 overflow-hidden">
+      {/* Hero Section */}
+      <div className="container-x mb-32">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl"
+        >
+          <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-gradient mb-8">
+            REDEFINING<br />
+            LIVING STANDARDS.
           </h1>
-          <p className="text-xl text-neutral-300 max-w-3xl mx-auto">
-            Your trusted partner in UAE real estate excellence
+          <p className="text-white/40 text-lg md:text-2xl font-medium leading-relaxed max-w-2xl">
+            Al Rabie Real Estate is more than a brokerage; we are curators of luxury lifestyles across the United Arab Emirates.
           </p>
+        </motion.div>
+      </div>
+
+      {/* Narrative Section */}
+      <section className="container-x mb-40">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-12"
+          >
+            <h2 className="text-3xl font-black tracking-tight text-white uppercase italic">Our Philosophy</h2>
+            <div className="space-y-6 text-white/50 text-lg leading-relaxed">
+              <p>
+                Established in the heart of the UAE, Al Rabie has grown into a beacon of architectural appreciation and investment foresight.
+                We believe that every home tells a story, and every investment shapes a future.
+              </p>
+              <p>
+                Our methodology combines deep local expertise with a global perspective on luxury. We don't just sell properties;
+                We curate spaces that inspire.
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="aspect-square rounded-[3rem] bg-white/5 border border-white/5 relative overflow-hidden group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent p-12 flex flex-col justify-end">
+              <h4 className="text-4xl font-black text-white mb-2">15+</h4>
+              <p className="text-xs font-black uppercase tracking-widest text-accent">Years of Excellence</p>
+            </div>
+            {/* Decorative lines */}
+            <div className="absolute top-0 right-0 w-32 h-32 border-t-2 border-r-2 border-white/5 rounded-tr-[3rem]" />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Values Grid */}
+      <section className="container-x mb-40">
+        <div className="text-center mb-20">
+          <h2 className="text-xs font-black uppercase tracking-[0.4em] text-accent mb-4">Core Principles</h2>
+          <p className="text-3xl font-bold tracking-tight text-white">The foundations of our success.</p>
         </div>
 
-        {/* Content */}
-        <div className="max-w-4xl mx-auto space-y-12">
-          {/* Our Story */}
-          <section className="bg-neutral-800 rounded-lg p-8">
-            <h2 className="text-3xl font-bold text-white mb-4">Our Story</h2>
-            <p className="text-neutral-300 leading-relaxed mb-4">
-              AL RABEI Real Estate has been serving the UAE property market with dedication and professionalism. 
-              We specialize in connecting buyers, sellers, and investors with their perfect properties.
-            </p>
-            <p className="text-neutral-300 leading-relaxed">
-              Our team of experienced brokers brings local market knowledge and international standards 
-              to every transaction, ensuring our clients receive the best possible service.
-            </p>
-          </section>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {values.map((v, i) => (
+            <motion.div
+              key={v.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="bento-card group"
+            >
+              <div className="text-4xl mb-6 grayscale group-hover:grayscale-0 transition-all duration-500">{v.icon}</div>
+              <h3 className="text-lg font-bold text-white mb-4">{v.title}</h3>
+              <p className="text-white/40 text-sm leading-relaxed">{v.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
 
-          {/* Our Values */}
-          <section className="bg-neutral-800 rounded-lg p-8">
-            <h2 className="text-3xl font-bold text-white mb-6">Our Values</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex gap-4">
-                <div className="text-4xl">🎯</div>
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Excellence</h3>
-                  <p className="text-neutral-300">
-                    We strive for excellence in every property transaction and client interaction.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex gap-4">
-                <div className="text-4xl">🤝</div>
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Trust</h3>
-                  <p className="text-neutral-300">
-                    Building lasting relationships through transparency and integrity.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex gap-4">
-                <div className="text-4xl">💡</div>
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Innovation</h3>
-                  <p className="text-neutral-300">
-                    Leveraging technology to provide seamless real estate experiences.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex gap-4">
-                <div className="text-4xl">🌟</div>
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Quality</h3>
-                  <p className="text-neutral-300">
-                    Curating the finest properties across the UAE market.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Services */}
-          <section className="bg-neutral-800 rounded-lg p-8">
-            <h2 className="text-3xl font-bold text-white mb-6">Our Services</h2>
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <span className="text-accent text-xl">✓</span>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Property Sales</h3>
-                  <p className="text-neutral-300">Expert guidance through buying and selling properties</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-3">
-                <span className="text-accent text-xl">✓</span>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Property Rentals</h3>
-                  <p className="text-neutral-300">Comprehensive rental solutions for landlords and tenants</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-3">
-                <span className="text-accent text-xl">✓</span>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Investment Consultation</h3>
-                  <p className="text-neutral-300">Strategic advice for real estate investments</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-3">
-                <span className="text-accent text-xl">✓</span>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Property Management</h3>
-                  <p className="text-neutral-300">Professional management services for property owners</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Contact CTA */}
-          <section className="bg-gradient-to-r from-accent/20 to-accent/10 border border-accent/30 rounded-lg p-8 text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
-            <p className="text-neutral-300 mb-6">
-              Contact us today to find your perfect property or list your property with us
-            </p>
-            <div className="flex gap-4 justify-center">
+      {/* Contact CTA */}
+      <section className="container-x">
+        <div className="glow-mesh rounded-[4rem] p-16 md:p-24 text-center border border-white/5 overflow-hidden relative">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white mb-8">START YOUR<br />JOURNEY.</h2>
+            <div className="flex flex-wrap items-center justify-center gap-6">
               <Link
                 href="/properties"
-                className="px-6 py-3 bg-accent text-white font-semibold rounded-lg hover:bg-accent/90 transition-colors"
+                className="px-8 py-4 bg-white text-black font-black rounded-full hover:scale-105 transition-transform"
               >
-                Browse Properties
+                BROWSE PORTFOLIO
               </Link>
               <Link
                 href="/contact"
-                className="px-6 py-3 bg-neutral-700 text-white font-semibold rounded-lg hover:bg-neutral-600 transition-colors"
+                className="px-8 py-4 bg-white/5 border border-white/10 text-white font-black rounded-full hover:bg-white/10 transition-all"
               >
-                Contact Us
+                REQUEST CALLBACK
               </Link>
             </div>
-          </section>
+          </motion.div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

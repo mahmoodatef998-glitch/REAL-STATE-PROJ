@@ -5,6 +5,8 @@ import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { ThemeProvider } from '../components/providers/ThemeProvider';
+import SmoothScroll from '../components/providers/SmoothScroll';
+import CustomCursor from '../components/ui/CustomCursor';
 
 export const metadata = {
   title: 'Alrabie Real Estate | Premier Properties in Ajman, UAE',
@@ -21,16 +23,19 @@ export default function RootLayout({ children }) {
         <a href="#main" className="sr-only focus:not-sr-only focus-ring inline-block p-2 bg-neutral-900 text-accent">
           Skip to content
         </a>
+        <CustomCursor />
         <ErrorBoundary>
           <ReactQueryClientProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} forcedTheme="dark">
-              <AuthProvider>
-                <Header />
-                <main id="main">
-                  {children}
-                </main>
-                <Footer />
-              </AuthProvider>
+              <SmoothScroll>
+                <AuthProvider>
+                  <Header />
+                  <main id="main">
+                    {children}
+                  </main>
+                  <Footer />
+                </AuthProvider>
+              </SmoothScroll>
             </ThemeProvider>
           </ReactQueryClientProvider>
         </ErrorBoundary>
