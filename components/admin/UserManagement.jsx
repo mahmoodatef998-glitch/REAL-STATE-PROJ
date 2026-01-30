@@ -16,6 +16,16 @@ export default function UserManagement() {
     });
     const [formError, setFormError] = useState('');
 
+    // Lock body scroll when modal is open
+    useEffect(() => {
+        if (showForm) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => { document.body.style.overflow = 'unset'; };
+    }, [showForm]);
+
     const { data: users = [], isLoading } = useUsers();
     const createUserMutation = useCreateUser();
     const updateUserMutation = useUpdateUser();
@@ -193,112 +203,114 @@ export default function UserManagement() {
 
             {/* Add/Edit User Modal */}
             {showForm && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 overflow-y-auto">
-                    <div className="absolute inset-0 bg-black/90 backdrop-blur-xl fixed" onClick={() => setShowForm(false)} />
-                    <div className="relative glass-effect border border-white/10 rounded-[2.5rem] p-10 w-full max-w-lg shadow-[0_0_100px_rgba(0,0,0,0.5)] animate-scale-in my-auto">
-                        <div className="flex items-center gap-3 mb-8">
-                            <div className="h-px w-8 bg-accent" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">Personnel File</span>
-                        </div>
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-black/90 backdrop-blur-xl" onClick={() => setShowForm(false)} />
 
-                        <h3 className="text-4xl font-bold text-white mb-2 tracking-tighter">
-                            {editingUser ? 'Modify' : 'Enlist'} <span className="text-white/30">{editingUser ? 'Profile' : 'Access'}</span>
-                        </h3>
-                        <p className="text-white/40 text-sm mb-10 font-medium">Configure credentials and system clearance levels for Alrabie members.</p>
-
-                        {formError && (
-                            <div className="mb-8 p-5 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-400 text-sm font-medium flex items-center gap-3">
-                                <span className="text-lg">⚠️</span> {formError}
+                    {/* Scrollable Wrapper */}
+                    <div className="relative w-full max-w-xl max-h-[95vh] overflow-y-auto no-scrollbar scroll-smooth">
+                        <div className="glass-effect border border-white/10 rounded-[2.5rem] p-8 md:p-10 shadow-[0_0_100px_rgba(0,0,0,0.5)] animate-scale-in my-4">
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="h-px w-8 bg-accent" />
+                                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">Personnel File</span>
                             </div>
-                        )}
 
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Operator Name</label>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        value={formData.name}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus-ring font-medium placeholder:text-white/10"
-                                        placeholder="E.g. Alexander Pierce"
-                                    />
+                            <h3 className="text-3xl font-bold text-white mb-1 tracking-tighter">
+                                {editingUser ? 'Modify' : 'Enlist'} <span className="text-white/30">{editingUser ? 'Profile' : 'Access'}</span>
+                            </h3>
+                            <p className="text-white/40 text-xs mb-8 font-medium">Configure credentials and system clearance levels.</p>
+
+                            {formError && (
+                                <div className="mb-8 p-5 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-400 text-sm font-medium flex items-center gap-3">
+                                    <span className="text-lg">⚠️</span> {formError}
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Identity Role</label>
-                                    <select
-                                        name="role"
-                                        value={formData.role}
-                                        onChange={handleInputChange}
-                                        className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus-ring font-medium appearance-none cursor-pointer"
+                            )}
+
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <div className="space-y-2">
+                                        <label className="text-[9px] font-black uppercase tracking-widest text-white/30 ml-2">Operator Name</label>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="w-full px-5 py-3.5 bg-white/5 border border-white/10 rounded-2xl text-white focus-ring font-medium placeholder:text-white/10 text-sm"
+                                            placeholder="E.g. Alexander Pierce"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[9px] font-black uppercase tracking-widest text-white/30 ml-2">Identity Role</label>
+                                        <select
+                                            name="role"
+                                            value={formData.role}
+                                            onChange={handleInputChange}
+                                            className="w-full px-5 py-3.5 bg-white/5 border border-white/10 rounded-2xl text-white focus-ring font-medium appearance-none cursor-pointer text-sm"
+                                        >
+                                            <option value="broker">Executive Broker</option>
+                                            <option value="admin">System Administrator</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-[9px] font-black uppercase tracking-widest text-white/30 ml-2">Email Address</label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="w-full px-5 py-3.5 bg-white/5 border border-white/10 rounded-2xl text-white focus-ring font-medium placeholder:text-white/10 text-sm"
+                                            placeholder="name@alrabei.com"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[9px] font-black uppercase tracking-widest text-white/30 ml-2">Direct Phone</label>
+                                        <input
+                                            type="text"
+                                            name="phone"
+                                            value={formData.phone}
+                                            onChange={handleInputChange}
+                                            className="w-full px-5 py-3.5 bg-white/5 border border-white/10 rounded-2xl text-white focus-ring font-medium placeholder:text-white/10 text-sm"
+                                            placeholder="+971 XX XXX XXXX"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2 md:col-span-2">
+                                        <div className="flex justify-between items-center ml-2">
+                                            <label className="text-[9px] font-black uppercase tracking-widest text-white/30">Intelligence Key (Password)</label>
+                                            {editingUser && <span className="text-[8px] font-bold text-accent uppercase">Leave blank to keep current</span>}
+                                        </div>
+                                        <input
+                                            type="password"
+                                            name="password"
+                                            value={formData.password}
+                                            onChange={handleInputChange}
+                                            required={!editingUser}
+                                            className="w-full px-5 py-3.5 bg-white/5 border border-white/10 rounded-2xl text-white focus-ring font-medium placeholder:text-white/10 text-sm"
+                                            placeholder="••••••••••••"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4 pt-4">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowForm(false)}
+                                        className="px-6 py-3.5 bg-white/5 hover:bg-white/10 text-white text-sm font-bold rounded-2xl transition-all"
                                     >
-                                        <option value="broker">Executive Broker</option>
-                                        <option value="admin">System Administrator</option>
-                                    </select>
+                                        Terminate
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={createUserMutation.isPending || updateUserMutation.isPending}
+                                        className="px-6 py-3.5 bg-accent text-white text-sm font-bold rounded-2xl hover:bg-accent/90 transition-all shadow-xl shadow-accent/20 disabled:opacity-50"
+                                    >
+                                        {createUserMutation.isPending || updateUserMutation.isPending ? 'Syncing...' : (editingUser ? 'Commit' : 'Confirm')}
+                                    </button>
                                 </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Secure Email Address</label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus-ring font-medium placeholder:text-white/10"
-                                        placeholder="name@alrabei.com"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Phone Number</label>
-                                    <input
-                                        type="text"
-                                        name="phone"
-                                        value={formData.phone}
-                                        onChange={handleInputChange}
-                                        className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus-ring font-medium placeholder:text-white/10"
-                                        placeholder="+971 XX XXX XXXX"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <div className="flex justify-between items-center ml-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-white/30">Intelligence Key</label>
-                                    {editingUser && <span className="text-[9px] font-bold text-accent uppercase">Leave blank to keep current</span>}
-                                </div>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    value={formData.password}
-                                    onChange={handleInputChange}
-                                    required={!editingUser}
-                                    className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus-ring font-medium placeholder:text-white/10"
-                                    placeholder="••••••••••••"
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-6 pt-4">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowForm(false)}
-                                    className="px-6 py-4 bg-white/5 hover:bg-white/10 text-white font-bold rounded-2xl transition-all"
-                                >
-                                    Terminate
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={createUserMutation.isPending || updateUserMutation.isPending}
-                                    className="px-6 py-4 bg-accent text-white font-bold rounded-2xl hover:bg-accent/90 transition-all shadow-xl shadow-accent/20 disabled:opacity-50"
-                                >
-                                    {createUserMutation.isPending || updateUserMutation.isPending ? 'Syncing...' : (editingUser ? 'Commit Changes' : 'Confirm Inclusion')}
-                                </button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             )}
