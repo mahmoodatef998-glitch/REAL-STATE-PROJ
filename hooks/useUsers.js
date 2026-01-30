@@ -1,6 +1,6 @@
 "use client";
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getPendingBrokers, approveBroker, rejectBroker, getAllUsers, createUser, deleteUser } from '../lib/api/users';
+import { getPendingBrokers, approveBroker, rejectBroker, getAllUsers, createUser, deleteUser, updateUser } from '../lib/api/users';
 
 export function usePendingBrokers() {
   return useQuery({
@@ -60,3 +60,13 @@ export function useDeleteUser() {
   });
 }
 
+export function useUpdateUser() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }) => updateUser(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+  });
+}
