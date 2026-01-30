@@ -144,8 +144,8 @@ export default function UserManagement() {
                                     </td>
                                     <td className="px-8 py-6">
                                         <span className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest inline-flex items-center gap-2 ${user.role === 'admin' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20 shadow-[0_0_15px_rgba(168,85,247,0.1)]' :
-                                                user.role === 'broker' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
-                                                    'bg-white/10 text-white/40'
+                                            user.role === 'broker' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
+                                                'bg-white/10 text-white/40'
                                             }`}>
                                             <span className={`w-1.5 h-1.5 rounded-full ${user.role === 'admin' ? 'bg-purple-400' : 'bg-blue-400 animate-pulse'}`} />
                                             {user.role}
@@ -153,8 +153,8 @@ export default function UserManagement() {
                                     </td>
                                     <td className="px-8 py-6">
                                         <span className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest ${user.status === 'approved' || user.status === 'active' ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
-                                                user.status === 'pending' ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' :
-                                                    'bg-red-500/10 text-red-500 border border-red-500/20'
+                                            user.status === 'pending' ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' :
+                                                'bg-red-500/10 text-red-500 border border-red-500/20'
                                             }`}>
                                             {user.status}
                                         </span>
@@ -193,9 +193,9 @@ export default function UserManagement() {
 
             {/* Add/Edit User Modal */}
             {showForm && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-black/90 backdrop-blur-xl" onClick={() => setShowForm(false)} />
-                    <div className="relative glass-effect border border-white/10 rounded-[2.5rem] p-10 w-full max-w-lg shadow-[0_0_100px_rgba(0,0,0,0.5)] animate-scale-in">
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 overflow-y-auto">
+                    <div className="absolute inset-0 bg-black/90 backdrop-blur-xl fixed" onClick={() => setShowForm(false)} />
+                    <div className="relative glass-effect border border-white/10 rounded-[2.5rem] p-10 w-full max-w-lg shadow-[0_0_100px_rgba(0,0,0,0.5)] animate-scale-in my-auto">
                         <div className="flex items-center gap-3 mb-8">
                             <div className="h-px w-8 bg-accent" />
                             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">Personnel File</span>
@@ -240,17 +240,30 @@ export default function UserManagement() {
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Secure Email Address</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus-ring font-medium placeholder:text-white/10"
-                                    placeholder="name@alrabei.com"
-                                />
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Secure Email Address</label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleInputChange}
+                                        required
+                                        className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus-ring font-medium placeholder:text-white/10"
+                                        placeholder="name@alrabei.com"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-white/30 ml-2">Phone Number</label>
+                                    <input
+                                        type="text"
+                                        name="phone"
+                                        value={formData.phone}
+                                        onChange={handleInputChange}
+                                        className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus-ring font-medium placeholder:text-white/10"
+                                        placeholder="+971 XX XXX XXXX"
+                                    />
+                                </div>
                             </div>
 
                             <div className="space-y-2">

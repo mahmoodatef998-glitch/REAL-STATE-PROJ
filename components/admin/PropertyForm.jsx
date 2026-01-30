@@ -411,10 +411,10 @@ export default function PropertyForm({ property, onClose, onSave }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm fixed" onClick={onClose} />
 
-      <div className="relative bg-neutral-900 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-white/10">
+      <div className="relative bg-neutral-900 rounded-3xl w-full max-w-4xl shadow-2xl border border-white/10 my-auto">
         <div className="sticky top-0 bg-neutral-900 border-b border-white/10">
           <div className="p-6 flex justify-between items-center">
             <h2 className="text-2xl font-bold">
