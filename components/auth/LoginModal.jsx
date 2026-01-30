@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
 import { loginSchema } from '../../lib/validations/schemas';
 
@@ -13,6 +14,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }) {
   const [fieldErrors, setFieldErrors] = useState({});
 
   const { login } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,6 +43,11 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }) {
     const result = await login(formData.email, formData.password);
 
     if (result.success) {
+      if (result.user?.role === 'admin') {
+        router.push('/admin/dashboard');
+      } else if (result.user?.role === 'broker') {
+        router.push('/broker/dashboard');
+      }
       onClose();
       setFormData({ email: '', password: '' });
     } else {

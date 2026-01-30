@@ -49,6 +49,14 @@ export default function Header() {
         <div className="flex items-center gap-4">
           {isAuthenticated ? (
             <div className="hidden lg:flex items-center gap-4">
+              {(isAdmin() || isBroker()) && (
+                <Link
+                  href={isAdmin() ? "/admin/dashboard" : "/broker/dashboard"}
+                  className="px-4 py-2 bg-accent/10 hover:bg-accent/20 border border-accent/20 rounded-xl text-xs font-bold text-accent transition-all"
+                >
+                  Dashboard
+                </Link>
+              )}
               <span className="text-white/60 text-xs font-medium uppercase tracking-widest">{user?.name}</span>
               <button
                 onClick={logout}
@@ -114,12 +122,23 @@ export default function Header() {
             <div className="h-px bg-white/10 w-full" />
             <div className="flex flex-col gap-3">
               {isAuthenticated ? (
-                <button
-                  onClick={() => { logout(); setIsMenuOpen(false); }}
-                  className="w-full py-4 bg-red-500/10 text-red-500 border border-red-500/20 rounded-2xl font-bold"
-                >
-                  Sign Out
-                </button>
+                <>
+                  {(isAdmin() || isBroker()) && (
+                    <Link
+                      href={isAdmin() ? "/admin/dashboard" : "/broker/dashboard"}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="w-full py-4 bg-accent text-white rounded-2xl font-bold text-center"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => { logout(); setIsMenuOpen(false); }}
+                    className="w-full py-4 bg-red-500/10 text-red-500 border border-red-500/20 rounded-2xl font-bold"
+                  >
+                    Sign Out
+                  </button>
+                </>
               ) : (
                 <div className="grid grid-cols-2 gap-3">
                   <button
