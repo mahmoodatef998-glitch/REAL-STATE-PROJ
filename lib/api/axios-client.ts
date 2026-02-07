@@ -1,9 +1,18 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 
+// Construct baseURL intelligently
 let baseURL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3050').trim();
-if (!baseURL.endsWith('/api/')) {
-    baseURL = `${baseURL.replace(/\/$/, '')}/api/`;
+
+// Ensure it doesn't have a trailing slash for consistent logic
+baseURL = baseURL.replace(/\/$/, '');
+
+// If it doesn't already contain /api, append it
+if (!baseURL.toLowerCase().endsWith('/api')) {
+    baseURL = `${baseURL}/api`;
 }
+
+// Ensure it ends with a single slash for axios consistency
+baseURL = `${baseURL}/`;
 
 // Custom interface for extending AxiosRequestConfig
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
